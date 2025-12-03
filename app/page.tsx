@@ -349,7 +349,7 @@ export default function Home() {
       controlX,
       controlY,
       progress: -delayProgress, // Negative progress creates delay
-      speed: 0.008 + Math.random() * 0.009,
+      speed: 0.005 + Math.random() * 0.006,
       color,
       trail: [],
       graphics,
@@ -457,7 +457,7 @@ export default function Home() {
       {/* PixiJS container for shooting stars */}
       <div 
         ref={containerRef} 
-        className="absolute inset-0 cursor-crosshair"
+        className="absolute inset-0 cursor-default"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       />
