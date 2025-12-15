@@ -60,6 +60,15 @@ interface BackgroundStar {
   twinkleOffset: number;
 }
 
+const isTouchDevice = () => {
+  if (typeof window === "undefined") return false;
+  const hasTouch =
+    "ontouchstart" in window ||
+    (typeof navigator !== "undefined" && navigator.maxTouchPoints > 0);
+  const prefersCoarse = window.matchMedia?.("(pointer: coarse)")?.matches;
+  return Boolean(hasTouch || prefersCoarse);
+};
+
 export default function StarBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
   const starsCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -96,7 +105,7 @@ export default function StarBackground() {
         y: Math.random() * canvas.height,
         size: Math.random() * 0.8 + 0.8,
         brightness: Math.random() * 0.5 + 0.3,
-        twinkleSpeed: Math.random() * 0.03 + 0.004,
+        twinkleSpeed: Math.random() * 0.04 + 0.005,
         twinkleOffset: Math.random() * Math.PI * 2,
       });
     }
@@ -139,8 +148,7 @@ export default function StarBackground() {
   useEffect(() => {
     if (!containerRef.current || appRef.current) return;
 
-    // Disable shooting stars on mobile devices
-    if (typeof window !== "undefined" && window.innerWidth < 768) return;
+    if (typeof window !== "undefined" && (window.innerWidth < 1024 || isTouchDevice())) return;
 
     const initPixi = async () => {
       const app = new PIXI.Application();
@@ -374,6 +382,10 @@ export default function StarBackground() {
 
   // Use window event listeners for mouse tracking
   useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth < 1024 || isTouchDevice()) {
+      return;
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
       const x = e.clientX;
       const y = e.clientY;
@@ -399,12 +411,12 @@ export default function StarBackground() {
       lastPosRef.current = null;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
       if (hoverTimeoutRef.current) {
         clearInterval(hoverTimeoutRef.current);
       }
@@ -445,4 +457,3 @@ export default function StarBackground() {
     </>
   );
 }
-

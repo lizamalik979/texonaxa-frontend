@@ -5,8 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Spline from "@splinetool/react-spline";
 import { poppins } from "../../fonts";
 import Logo from "../../../public/images/logo.svg";
+
+const SPLINE_URL = "https://prod.spline.design/kqiu73VsJPWPhPJf/scene.splinecode";
 
 const navItems = [
   { label: "Services", href: "#services" },
@@ -17,16 +20,44 @@ const navItems = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [show3D, setShow3D] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+
+    const handleScroll = () => {
+      // Check multiple sources for scroll position to be robust against global CSS layout quirks
+      const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+      setShow3D(currentScrollY > 10);
+    };
+
+    // Use capture: true to catch scroll events from children (like body or a wrapper) 
+    // if the window itself isn't technically scrolling due to height: 100%
+    window.addEventListener("scroll", handleScroll, { capture: true, passive: true });
+
+    // Initial check
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll, { capture: true });
   }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full backdrop-blur-md bg-transparent">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
-          <Image src={Logo} alt="Tex Naxa Logo" priority className="h-8 w-auto" />
+        <Link href="/" className="flex items-center gap-3 relative h-12 w-32">
+          {/* Static Logo - Fades out on scroll */}
+          <div
+            className={`absolute inset-0 flex items-center justify-start transition-opacity duration-500 z-10 ${show3D ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          >
+            <Image src={Logo} alt="Tex Naxa Logo" priority className="h-8 w-auto" />
+          </div>
+
+          {/* 3D Spline Model - Fades in on scroll */}
+          <div
+            className={`absolute top-[-50px] left-[-40px] w-[150px] h-[150px] pointer-events-none transition-opacity duration-500 z-20 ${show3D ? 'opacity-100' : 'opacity-0'}`}
+          >
+            <Spline scene={SPLINE_URL} />
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
