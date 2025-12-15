@@ -155,6 +155,42 @@ export function World({ globeConfig, data, onGlobeReady }: WorldProps) {
         };
     }, [notifyGlobeReady, onGlobeReady]);
 
+    useEffect(() => {
+        if (!mergedConfig.autoRotate) return;
+
+        const tiltAngle = (23.5 * Math.PI) / 180;
+        const rotationSpeed = (mergedConfig.autoRotateSpeed ?? 0.5) * 0.01;
+        const xRotationSpeed = rotationSpeed * 0.25;
+        let xRotationOffset = 0;
+        let rotationFrame: number | undefined;
+        let waitId: number | undefined;
+
+        const animate = () => {
+            const scene = globeRef.current?.scene?.();
+            if (scene) {
+                scene.rotation.y = (scene.rotation.y + rotationSpeed) % (Math.PI * 2);
+                xRotationOffset = (xRotationOffset + xRotationSpeed) % (Math.PI * 2);
+                scene.rotation.x = tiltAngle + xRotationOffset;
+            }
+            rotationFrame = requestAnimationFrame(animate);
+        };
+
+        const startAnimation = () => {
+            if (!globeRef.current) {
+                waitId = requestAnimationFrame(startAnimation);
+                return;
+            }
+            rotationFrame = requestAnimationFrame(animate);
+        };
+
+        startAnimation();
+
+        return () => {
+            if (rotationFrame !== undefined) cancelAnimationFrame(rotationFrame);
+            if (waitId !== undefined) cancelAnimationFrame(waitId);
+        };
+    }, [mergedConfig.autoRotate, mergedConfig.autoRotateSpeed]);
+
     const globeTexture = useMemo(() => {
         if (typeof window === "undefined") return undefined;
         const canvas = document.createElement("canvas");
