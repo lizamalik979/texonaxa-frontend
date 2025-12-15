@@ -129,8 +129,8 @@ export default function DigitalGrowth() {
                       </p>
 
                       {/* Read More Button */}
-                      <button className={`w-full py-3 px-6 bg-transparent border border-amber-400/60 rounded-lg hover:border-amber-400 transition-all duration-300 ${poppins.className}`}>
-                        <span className="text-amber-400 text-base font-medium">
+                      <button className={`w-full py-3 px-6 bg-transparent border border-[#FEE39A] rounded-lg hover:border-[#FEE39A] transition-all duration-300 ${poppins.className}`}>
+                        <span className="text-[#FEE39A] text-base font-medium">
                           Read More
                         </span>
                       </button>
