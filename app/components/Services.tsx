@@ -269,7 +269,7 @@ const Services = () => {
                 <div className="relative w-full h-full flex flex-col items-center justify-center gap-4">
                   {[-2, -1, 0, 1, 2].map((offset) => {
                     const index = activeSection + offset;
-                    
+
                     // Skip if index is out of bounds
                     if (index < 0 || index >= sections.length) {
                       return (
@@ -279,22 +279,22 @@ const Services = () => {
                         />
                       );
                     }
-                    
+
                     const section = sections[index];
                     const isActive = offset === 0;
                     const distance = Math.abs(offset);
-                    
+
                     // Opacity: center = 1, 1 away = 0.4, 2 away = 0.15
                     const opacity = distance === 0 ? 1 : distance === 1 ? 0.4 : 0.15;
-                    
+
                     // Scale: center = 1, others slightly smaller
                     const scale = distance === 0 ? 1 : distance === 1 ? 0.95 : 0.9;
-                    
+
                     return (
                       <div
                         key={index}
                         className="h-[70px] flex items-center justify-center transition-all duration-700 ease-out"
-                        style={{ 
+                        style={{
                           opacity,
                           transform: `scale(${scale})`,
                         }}
@@ -302,9 +302,8 @@ const Services = () => {
                         {/* Left arrow - only visible for active */}
                         <button
                           onClick={handlePrev}
-                          className={`flex items-center justify-center text-white transition-all duration-700 ease-out overflow-hidden ${
-                            isActive ? "opacity-100 w-12 mr-6" : "opacity-0 w-0 mr-0"
-                          }`}
+                          className={`flex items-center justify-center text-white transition-all duration-700 ease-out overflow-hidden ${isActive ? "opacity-100 w-12 mr-6" : "opacity-0 w-0 mr-0"
+                            }`}
                           aria-label="Previous service"
                         >
                           <svg
@@ -321,9 +320,8 @@ const Services = () => {
 
                         {/* Service title */}
                         <span
-                          className={`text-center transition-all duration-700 ease-out cursor-default ${
-                            isActive ? "text-white" : "text-white/80"
-                          }`}
+                          className={`text-center transition-all duration-700 ease-out cursor-default ${isActive ? "text-white" : "text-white/80"
+                            }`}
                         >
                           <span className={`text-xl lg:text-2xl xl:text-3xl font-semibold whitespace-nowrap transition-all duration-700 ${poppins.className}`}>
                             {section.title}
@@ -333,9 +331,8 @@ const Services = () => {
                         {/* Right arrow - only visible for active */}
                         <button
                           onClick={handleNext}
-                          className={`flex items-center justify-center text-white transition-all duration-700 ease-out overflow-hidden ${
-                            isActive ? "opacity-100 w-12 ml-6" : "opacity-0 w-0 ml-0"
-                          }`}
+                          className={`flex items-center justify-center text-white transition-all duration-700 ease-out overflow-hidden ${isActive ? "opacity-100 w-12 ml-6" : "opacity-0 w-0 ml-0"
+                            }`}
                           aria-label="Next service"
                         >
                           <svg
@@ -350,8 +347,8 @@ const Services = () => {
                           </svg>
                         </button>
                       </div>
-                      );
-                    })}
+                    );
+                  })}
                 </div>
               </motion.div>
 
@@ -367,7 +364,7 @@ const Services = () => {
                 <div className="relative w-full max-w-[486px]">
                   {/* Gradient glow behind the card */}
                   <div className="absolute -inset-4 bg-gradient-to-br from-yellow-400/30 via-green-400/20 to-purple-500/30 rounded-3xl blur-2xl opacity-60" />
-                  
+
                   {/* Card */}
                   <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-yellow-200/90 via-green-200/80 to-blue-200/70 p-1">
                     <div className="relative aspect-square max-h-[485px] rounded-3xl overflow-hidden">
@@ -376,11 +373,10 @@ const Services = () => {
                         {sections.map((section, index) => (
                           <div
                             key={index}
-                            className={`absolute inset-0 bg-gradient-to-br ${section.color} transition-opacity duration-500 ${
-                              activeSection === index
-                                ? "opacity-100"
-                                : "opacity-0"
-                            }`}
+                            className={`absolute inset-0 bg-gradient-to-br ${section.color} transition-opacity duration-500 ${activeSection === index
+                              ? "opacity-100"
+                              : "opacity-0"
+                              }`}
                           />
                         ))}
                       </div>

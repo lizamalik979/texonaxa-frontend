@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { poppins } from "../fonts";
 
@@ -18,6 +19,8 @@ export default function OurServices() {
       transition: { duration: 0.6, delay },
     }),
   };
+
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
   return (
     <motion.section
@@ -60,9 +63,10 @@ export default function OurServices() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
+              onClick={() => setActiveCard(activeCard === index ? null : index)}
             >
               {/* Image Placeholder - Full Card Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 transition-all duration-300 group-hover:blur-md">
+              <div className={`absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 transition-all duration-300 group-hover:blur-md ${activeCard === index ? "blur-md" : ""}`}>
                 {/* Gradient effects */}
                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/30 via-purple-500/20 to-orange-500/20"></div>
                 {/* Phone-like shape in center */}
@@ -72,10 +76,10 @@ export default function OurServices() {
               </div>
 
               {/* Blur overlay - appears on hover */}
-              <div className="absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
+              <div className={`absolute inset-0 bg-black/30 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 ${activeCard === index ? "opacity-100" : ""}`}></div>
 
               {/* Content Overlay - Hidden initially, appears on hover */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col gap-4 z-20 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+              <div className={`absolute bottom-0 left-0 right-0 p-6 flex flex-col gap-4 z-20 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ${activeCard === index ? "opacity-100 translate-y-0" : ""}`}>
                 {/* Service Title */}
                 <h3 className={`text-white text-xl font-bold ${poppins.className}`}>
                   {service.title}
@@ -94,4 +98,5 @@ export default function OurServices() {
       </motion.div>
     </motion.section>
   );
+
 }

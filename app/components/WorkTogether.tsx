@@ -18,6 +18,7 @@ export default function WorkTogether() {
               Get in touch
             </span>
           </button>
+
         </div>
       </div>
     </section>
