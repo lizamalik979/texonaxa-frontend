@@ -3,6 +3,8 @@
 :root {
   --background: #05050f;
   --foreground: #ededed;
+   --swiper-pagination-bullet-inactive-color: rgba(255, 255, 255, 0.3);
+  --swiper-pagination-color: #FEE39A; /* active bullet */
 }
 
 @theme inline {
@@ -105,3 +107,15 @@ body {
 .animate-marquee-vertical-reverse {
   animation: marquee-vertical-reverse 40s linear infinite;
 }
+
+.swiper-wrapper {
+  align-items: stretch;
+}
+
+.swiper-slide {
+  height: auto !important;
+}
+
+
+
+

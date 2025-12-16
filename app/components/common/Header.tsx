@@ -12,8 +12,8 @@ import Logo from "../../../public/images/logo.svg";
 const SPLINE_URL = "https://prod.spline.design/kqiu73VsJPWPhPJf/scene.splinecode";
 
 const navItems = [
-  { label: "Services", href: "#services" },
-  { label: "About us", href: "#about" },
+  { label: "Services", href: "/web-development" },
+  { label: "About us", href: "/about" },
   { label: "Contact us", href: "#contact" },
 ];
 
