@@ -4,8 +4,8 @@ import { poppins } from "../../fonts";
 import Logo from "../../../public/images/logo.svg";
 
 const navItems = [
-  { label: "Services", href: "#services" },
-  { label: "About us", href: "#about" },
+  { label: "Services", href: "/web-development" },
+  { label: "About us", href: "/about" },
   { label: "Contact us", href: "#contact" },
 ];
 
