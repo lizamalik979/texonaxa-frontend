@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { orbitron, poppins } from "../fonts";
+import { GalaxyCanvas } from "./ui/galaxy";
 
 export default function HeroSection() {
   const containerVariants = {
@@ -62,9 +63,10 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-8 py-20">
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-8 py-20 overflow-hidden">
+      <GalaxyCanvas />
       <motion.div
-        className="flex flex-col items-center w-full max-w-[1440px] mx-auto gap-8"
+        className="relative z-20 flex flex-col items-center w-full max-w-[1440px] mx-auto gap-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -118,4 +120,3 @@ export default function HeroSection() {
     </section>
   );
 }
-

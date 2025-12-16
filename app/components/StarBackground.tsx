@@ -60,6 +60,15 @@ interface BackgroundStar {
   twinkleOffset: number;
 }
 
+const isTouchDevice = () => {
+  if (typeof window === "undefined") return false;
+  const hasTouch =
+    "ontouchstart" in window ||
+    (typeof navigator !== "undefined" && navigator.maxTouchPoints > 0);
+  const prefersCoarse = window.matchMedia?.("(pointer: coarse)")?.matches;
+  return Boolean(hasTouch || prefersCoarse);
+};
+
 export default function StarBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
   const starsCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -89,14 +98,14 @@ export default function StarBackground() {
     // Create stars
     const stars: BackgroundStar[] = [];
     const starCount = Math.min(150, Math.floor((window.innerWidth * window.innerHeight) / 12000));
-    
+
     for (let i = 0; i < starCount; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 0.8 + 0.8,
         brightness: Math.random() * 0.5 + 0.3,
-        twinkleSpeed: Math.random() * 0.02 + 0.01,
+        twinkleSpeed: Math.random() * 0.04 + 0.005,
         twinkleOffset: Math.random() * Math.PI * 2,
       });
     }
@@ -139,9 +148,11 @@ export default function StarBackground() {
   useEffect(() => {
     if (!containerRef.current || appRef.current) return;
 
+    if (typeof window !== "undefined" && (window.innerWidth < 1024 || isTouchDevice())) return;
+
     const initPixi = async () => {
       const app = new PIXI.Application();
-      
+
       await app.init({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -186,12 +197,12 @@ export default function StarBackground() {
           meteor.trail.push({ x: currentPos.x, y: currentPos.y });
 
           const fadeStart = 0.5;
-          const fadeOut = meteor.progress > fadeStart 
+          const fadeOut = meteor.progress > fadeStart
             ? 1 - ((meteor.progress - fadeStart) / (1 - fadeStart))
             : 1;
           const fade = Math.pow(fadeOut, 2);
 
-          const maxTrailLength = Math.floor(60 * fade) + 10;
+          const maxTrailLength = Math.floor(120 * fade) + 20;
           while (meteor.trail.length > maxTrailLength) {
             meteor.trail.shift();
           }
@@ -210,7 +221,7 @@ export default function StarBackground() {
             const t = i / trailLength;
             const auraSize = (12 + t * 20) * fade;
             const auraOpacity = 0.02 * fade;
-            
+
             meteor.graphics.circle(point.x, point.y, auraSize);
             meteor.graphics.fill({ color: glowColor, alpha: auraOpacity });
           }
@@ -221,7 +232,7 @@ export default function StarBackground() {
             const t = i / trailLength;
             const glowOpacity = Math.pow(t, 2) * 0.1 * fade;
             const glowWidth = (Math.pow(t, 0.8) * 12 + 1) * fade;
-            
+
             if (glowOpacity > 0.01) {
               meteor.graphics.moveTo(prev.x, prev.y);
               meteor.graphics.lineTo(curr.x, curr.y);
@@ -232,15 +243,15 @@ export default function StarBackground() {
           for (let i = 1; i < trailLength; i++) {
             const prev = meteor.trail[i - 1];
             const curr = meteor.trail[i];
-            
+
             const t = i / trailLength;
             const opacity = Math.pow(t, 2) * 0.9 * fade;
             const width = (Math.pow(t, 1.2) * 2 + 0.2) * fade;
-            
+
             const r = Math.floor(color.tail.r + (color.head.r - color.tail.r) * t);
             const g = Math.floor(color.tail.g + (color.head.g - color.tail.g) * t);
             const b = Math.floor(color.tail.b + (color.head.b - color.tail.b) * t);
-            
+
             if (opacity > 0.01 && width > 0.1) {
               meteor.graphics.moveTo(prev.x, prev.y);
               meteor.graphics.lineTo(curr.x, curr.y);
@@ -254,7 +265,7 @@ export default function StarBackground() {
             const t = (i - trailLength * 0.7) / (trailLength * 0.3);
             const coreOpacity = Math.pow(t, 1.5) * 0.8 * fade;
             const coreWidth = (Math.pow(t, 1) * 1.2 + 0.2) * fade;
-            
+
             if (coreOpacity > 0.01) {
               meteor.graphics.moveTo(prev.x, prev.y);
               meteor.graphics.lineTo(curr.x, curr.y);
@@ -299,21 +310,21 @@ export default function StarBackground() {
 
     const baseAngle = 45 * (Math.PI / 180);
     const angle = baseAngle + angleOffset;
-    
+
     const distance = 2000 + Math.random() * 400;
-    
+
     const screenMidX = window.innerWidth / 2;
     const directionX = startX > screenMidX ? -1 : 1;
-    
+
     const travel = distance * 0.7;
     const endX = startX + Math.cos(angle) * travel * directionX;
     const endY = startY + Math.sin(angle) * travel;
-    
+
     const controlX = startX + Math.cos(angle) * travel * 0.5 * directionX;
     const controlY = startY + Math.sin(angle) * travel * 0.5;
 
     const color = starColors[Math.floor(Math.random() * starColors.length)];
-    
+
     const graphics = new PIXI.Graphics();
     graphics.blendMode = "add";
     appRef.current!.stage.addChild(graphics);
@@ -327,7 +338,7 @@ export default function StarBackground() {
       controlX,
       controlY,
       progress: -delayProgress,
-      speed: 0.003 + Math.random() * 0.004,
+      speed: 0.0015 + Math.random() * 0.002,
       color,
       trail: [],
       graphics,
@@ -371,20 +382,24 @@ export default function StarBackground() {
 
   // Use window event listeners for mouse tracking
   useEffect(() => {
+    if (typeof window === "undefined" || window.innerWidth < 1024 || isTouchDevice()) {
+      return;
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
       const x = e.clientX;
       const y = e.clientY;
-      
+
       lastPosRef.current = { x, y };
 
       if (!hoverTimeoutRef.current && isReadyRef.current) {
         spawnMeteor(x, y);
-        
+
         hoverTimeoutRef.current = setInterval(() => {
           if (lastPosRef.current) {
             spawnMeteor(lastPosRef.current.x, lastPosRef.current.y);
           }
-        }, 2000);
+        }, 8000);
       }
     };
 
@@ -396,12 +411,12 @@ export default function StarBackground() {
       lastPosRef.current = null;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
       if (hoverTimeoutRef.current) {
         clearInterval(hoverTimeoutRef.current);
       }
@@ -413,7 +428,7 @@ export default function StarBackground() {
       {/* Visual layer - behind content */}
       <div className="fixed inset-0 w-full h-full overflow-hidden bg-black z-0">
         {/* Smoky gradient background */}
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background: `
@@ -427,14 +442,14 @@ export default function StarBackground() {
         />
 
         {/* Twinkling stars canvas */}
-        <canvas 
+        <canvas
           ref={starsCanvasRef}
           className="absolute inset-0 pointer-events-none"
         />
 
         {/* PixiJS container for shooting stars */}
-        <div 
-          ref={containerRef} 
+        <div
+          ref={containerRef}
           className="absolute inset-0 pointer-events-none"
         />
       </div>
@@ -442,4 +457,3 @@ export default function StarBackground() {
     </>
   );
 }
-
