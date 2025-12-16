@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { orbitron, poppins } from "../fonts";
 import { GalaxyCanvas } from "./ui/galaxy";
 
 export default function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -62,9 +65,40 @@ export default function HeroSection() {
     },
   };
 
+  // Intersection Observer to pause galaxy when out of viewport
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Pause when less than 10% visible
+          setIsVisible(entry.intersectionRatio > 0.1);
+        });
+      },
+      {
+        threshold: [0, 0.1, 0.5, 1],
+        rootMargin: "-10% 0px -10% 0px", // Trigger when 10% from top/bottom
+      }
+    );
+
+    observer.observe(sectionRef.current);
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-8 py-20 overflow-hidden">
-      <GalaxyCanvas />
+    <section 
+      ref={sectionRef}
+      className="relative min-h-screen flex flex-col items-center justify-center px-8 py-20 overflow-hidden"
+    >
+      <div className="hidden lg:block">
+        <GalaxyCanvas paused={!isVisible} />
+      </div>
       <motion.div
         className="relative z-20 flex flex-col items-center w-full max-w-[1440px] mx-auto gap-8"
         variants={containerVariants}

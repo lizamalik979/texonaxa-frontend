@@ -105,7 +105,7 @@ export default function StarBackground() {
         y: Math.random() * canvas.height,
         size: Math.random() * 0.8 + 0.8,
         brightness: Math.random() * 0.5 + 0.3,
-        twinkleSpeed: Math.random() * 0.04 + 0.005,
+        twinkleSpeed: Math.random() * 0.05 + 0.006,
         twinkleOffset: Math.random() * Math.PI * 2,
       });
     }

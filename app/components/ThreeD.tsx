@@ -11,7 +11,7 @@ const World = dynamic(() => import("./ui/globe").then((m) => m.World), {
 export default function ThreeD() {
   const globeConfig = {
     pointSize: 4,
-    globeColor: "#1E7CCA",
+    globeColor: "#0e274b",
     showAtmosphere: true,
     atmosphereColor: "#dfe9ff",
     atmosphereAltitude: 0.1,
@@ -23,10 +23,10 @@ export default function ThreeD() {
     directionalLeftLight: "#ffffff",
     directionalTopLight: "#ffffff",
     pointLight: "#ffffff",
-    landColor: "#4DA64E",
-    landSwellColor: "#6ed66a",
-    landHighlightColor: "#D8FF8F",
-    landShadowColor: "#1F5E1A",
+    landColor: "#d28F14",
+    landSwellColor: "#f0af4e",
+    landHighlightColor: "#d28F14",
+    landShadowColor: "#f0af4e",
     landGradientStrength: 0.85,
     landAltitude: 0.028,
     landAltitudeVariance: 0.02,

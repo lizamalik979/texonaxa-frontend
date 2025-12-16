@@ -133,20 +133,6 @@ function Knot(props: KnotProps) {
   )
 }
 
-//function BlackHoleNucleus({ size }) {
-//  const meshRef = useRef();
-//
-//  return (
-//    <mesh ref={meshRef} scale={[size, size, size]} position={[0, 0, 0]}>
-//      <sphereBufferGeometry
-//        attach="geometry"
-//        args={[0.5, 32, 32, 0, 6.4, 0, 6.3]}
-//      />
-//      <meshBasicMaterial attach="material" color="#000" />
-//    </mesh>
-//  );
-//}
-
 interface NucleusProps {
   size: number;
 }
@@ -163,22 +149,6 @@ function Nucleus({ size }: NucleusProps) {
     </mesh>
   )
 
-  //const geometry = new THREE.IcosahedronGeometry( 1, 15 );
-
-  //		for ( let i = 0; i < 50; i ++ ) {
-
-  //			const color = new THREE.Color();
-  //			color.setHSL( Math.random(), 0.7, Math.random() * 0.2 + 0.05 );
-
-  //			const material = new THREE.MeshBasicMaterial( { color: color } );
-  //			const sphere = new THREE.Mesh( geometry, material );
-  //			sphere.position.normalize().multiplyScalar( Math.random() * 4.0 + 2.0 );
-  //			sphere.scale.setScalar( Math.random() * Math.random() + 0.5 );
-  //			scene.add( sphere );
-
-  //			if ( Math.random() < 0.25 ) sphere.layers.enable( BLOOM_SCENE );
-
-  //    }
 }
 
 const Effects = React.forwardRef<any, any>((props, ref) => {
@@ -190,24 +160,22 @@ const Effects = React.forwardRef<any, any>((props, ref) => {
   )
 })
 
-export function GalaxyCanvas() {
-  const dof = useRef<any>(null)
-  //return (
-  //  <Canvas linear flat colorManagement={false} style={{ height: `100vh` }} camera={{ position: [0, 2, 5] }}>
-  //    <pointLight position={[15, 15, 15]} intensity={1} />
-  //    <Suspense fallback={null}>
-  //      <Galaxy dof={dof} />
-  //      <Knot position={[0, 0, 0]} />
-  //    </Suspense>
-  //    <Effects ref={dof} />
-  //    <axesHelper args={[2, 2, 2]} />
-  //  </Canvas>
-  //)
+interface GalaxyCanvasProps {
+  paused?: boolean;
+}
 
-  // TODO do real color management
+export function GalaxyCanvas({ paused = false }: GalaxyCanvasProps) {
+  const dof = useRef<any>(null)
+  
   return (
     <div className="absolute inset-0 z-[1] w-full h-full pointer-events-none">
-      <Canvas linear flat camera={{ position: [0, 0.5, 5] }} gl={{ alpha: true }}>
+      <Canvas 
+        linear 
+        flat 
+        camera={{ position: [0, 0.8, 4] }}
+        gl={{ alpha: true }}
+        frameloop={paused ? "never" : "always"}
+      >
         <Suspense fallback={null}>
           <Galaxy dof={dof} />
           <Nucleus size={0.125} />
