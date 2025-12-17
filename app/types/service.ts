@@ -19,6 +19,11 @@ export interface ServiceApiResponse {
       serviceCardDescription: string;
     }[];
   };
+  technologySection?:{
+    heading:string;
+    description:string;
+    technologyImages:string[];
+  };
   faqSection?: {
     faqHeading: string;
     faqDescription: string;

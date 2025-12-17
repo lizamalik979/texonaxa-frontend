@@ -99,7 +99,15 @@ export default async function ServicePage({
           serviceCards={data.serviceDetailSection.serviceCards}
         />
       )}
-      <OurTechnologies />
+      {
+        data.technologySection && (
+          <OurTechnologies 
+          heading={data.technologySection.heading}
+          description={data.technologySection.description}
+          technologyImages={data.technologySection.technologyImages}/>
+        )
+      }
+      
       {data.faqSection && (
         <FAQ
           faqHeading={data.faqSection.faqHeading}
