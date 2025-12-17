@@ -9,7 +9,7 @@ import Spline from "@splinetool/react-spline";
 import { poppins } from "../../fonts";
 import Logo from "../../../public/images/logo.svg";
 
-const SPLINE_URL = "https://prod.spline.design/kqiu73VsJPWPhPJf/scene.splinecode";
+const SPLINE_URL = "https://prod.spline.design/jeCE9g-t7Gk8oO9M/scene.splinecode";
 
 const navItems = [
   { label: "Services", href: "/web-development" },
@@ -54,7 +54,7 @@ export default function Header() {
 
           {/* 3D Spline Model - Fades in on scroll */}
           <div
-            className={`absolute top-[-50px] left-[-40px] w-[150px] h-[150px] pointer-events-none transition-opacity duration-500 z-20 ${show3D ? 'opacity-100' : 'opacity-0'}`}
+            className={`absolute top-[-45px] left-[-40px] w-[150px] h-[150px] pointer-events-none transition-opacity duration-500 z-20 ${show3D ? 'opacity-100' : 'opacity-0'}`}
           >
             <Spline scene={SPLINE_URL} />
           </div>
