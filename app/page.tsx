@@ -42,6 +42,7 @@ export default function Home() {
   return (
     <main>
       <HeroSection />
+      {/* Load first few sections immediately */}
       <AboutUs />
       <LazyLoadSection rootMargin="600px">
         <Services />
