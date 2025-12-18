@@ -57,18 +57,18 @@ export async function generateMetadata(): Promise<Metadata> {
   const blogs = await getAllBlogs();
   
   return {
-    title: "Blog | Your Company Name",
+    title: "Blog | Texonasa",
     description: "Read our latest blog posts, insights, and updates",
     keywords: ["blog", "articles", "insights", "updates"],
     openGraph: {
-      title: "Blog | Your Company Name",
+      title: "Blog | Texonasa",
       description: "Read our latest blog posts, insights, and updates",
       type: "website",
       url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com'}/blog`,
     },
     twitter: {
       card: "summary_large_image",
-      title: "Blog | Your Company Name",
+      title: "Blog | Texonasa",
       description: "Read our latest blog posts, insights, and updates",
     },
     alternates: {
