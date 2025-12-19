@@ -42,27 +42,19 @@ export default function Home() {
   return (
     <main>
       <HeroSection />
-      {/* Load first few sections immediately */}
+      {/* Load sections immediately or with very large rootMargin */}
       <AboutUs />
-      <LazyLoadSection rootMargin="600px">
-        <Services />
-      </LazyLoadSection>
-      <LazyLoadSection rootMargin="1000px">
+      <Services />
+      <LazyLoadSection rootMargin="2000px">
         <OurServices />
       </LazyLoadSection>
-      <LazyLoadSection rootMargin="600px">
-        <DigitalGrowth />
-      </LazyLoadSection>
-      <LazyLoadSection rootMargin="600px">
-        <OurStory />
-      </LazyLoadSection>
-      <LazyLoadSection rootMargin="600px">
-        <TrustedBy />
-      </LazyLoadSection>
-      <LazyLoadSection rootMargin="600px">
+      <DigitalGrowth />
+      <OurStory />
+      <TrustedBy />
+      <LazyLoadSection rootMargin="1500px">
         <Testimonials />
       </LazyLoadSection>
-      <LazyLoadSection rootMargin="600px">
+      <LazyLoadSection rootMargin="1500px">
         <WorkTogether />
       </LazyLoadSection>
     </main>

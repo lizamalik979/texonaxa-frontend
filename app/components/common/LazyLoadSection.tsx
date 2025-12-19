@@ -16,7 +16,7 @@ interface LazyLoadSectionProps {
 export default function LazyLoadSection({
   children,
   fallback = <div className="min-h-screen" />,
-  rootMargin = "800px", // Start loading 800px before entering viewport
+  rootMargin = "2000px", // Start loading 2000px before entering viewport
   threshold = 0.01,
 }: LazyLoadSectionProps) {
   const [isVisible, setIsVisible] = useState(false);
