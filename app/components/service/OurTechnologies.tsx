@@ -54,3 +54,6 @@ export default function OurTechnologies({heading,description,technologyImages}:t
     </section>
   );
 }
+
+
+

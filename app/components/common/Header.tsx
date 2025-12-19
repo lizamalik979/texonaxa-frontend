@@ -14,7 +14,7 @@ const SPLINE_URL = "https://prod.spline.design/kqiu73VsJPWPhPJf/scene.splinecode
 const navItems = [
   { label: "Services", href: "/web-development" },
   { label: "About us", href: "/about" },
-  { label: "Contact us", href: "#contact" },
+  { label: "Contact us", href: "/contact" },
 ];
 
 export default function Header() {
