@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { poppins } from "../../fonts";
+import OpenLeadModalButton from "../leads/OpenLeadModalButton";
 
 interface HeroProps {
   heroheading?: string;
@@ -36,11 +37,12 @@ export default function Hero({
           )}
 
           {/* Call-to-Action Button */}
-          <button
+          <OpenLeadModalButton
             className={`w-fit px-8 py-4 bg-[#FBEAAB] text-black rounded-lg text-lg font-semibold hover:bg-[#F5E19A] transition-colors ${poppins.className}`}
+            serviceSelected={typeof heroheading === "string" ? heroheading : undefined}
           >
             Start Project
-          </button>
+          </OpenLeadModalButton>
         </div>
 
         {/* Image - Right side */}
@@ -62,3 +64,6 @@ export default function Hero({
     </section>
   );
 }
+
+
+
