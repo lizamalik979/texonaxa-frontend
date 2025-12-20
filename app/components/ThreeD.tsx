@@ -26,15 +26,15 @@ export default function ThreeD() {
     landColor: "#d28F14",
     landSwellColor: "#f0af4e",
     landHighlightColor: "#d28F14",
-    landShadowColor: "#f0af4e",
-    landGradientStrength: 0.85,
-    landAltitude: 0.028,
-    landAltitudeVariance: 0.02,
+    landShadowColor: "#8B5A2B",
+    landGradientStrength: 0.95,
+    landAltitude: 0.05,
+    landAltitudeVariance: 0.03,
     landLightDirection: [-0.2, 0.95, 0.3] as [number, number, number],
-    landMountainHeight: 0.055,
+    landMountainHeight: 0.08,
     landMountainFrequency: 1.65,
-    landRidgeContrast: 2.4,
-    landAmbientShadow: 0.45,
+    landRidgeContrast: 2.6,
+    landAmbientShadow: 0.65,
     arcTime: 1000,
     arcLength: 0.9,
     rings: 1,
@@ -417,7 +417,7 @@ export default function ThreeD() {
           {/* TAXA - Left Side */}
           <div className="flex-1 flex justify-end">
             <h2
-              className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-b from-white to-black bg-clip-text text-transparent z-10 ${poppins.className}`}
+              className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold bg-gradient-to-b from-white to-black bg-clip-text text-transparent z-10 ${poppins.className}`}
             >
               TAXA
             </h2>
@@ -425,7 +425,7 @@ export default function ThreeD() {
 
           {/* Globe - Center */}
           <motion.div
-            className="w-full h-full max-w-[280px] max-h-[280px] sm:max-w-[450px] sm:max-h-[450px] z-30 relative flex items-center justify-center shrink-0"
+            className="w-full h-full max-w-[220px] max-h-[220px] sm:max-w-[350px] sm:max-h-[350px] z-30 relative flex items-center justify-center shrink-0"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -439,7 +439,7 @@ export default function ThreeD() {
           {/* NOVA - Right Side */}
           <div className="flex-1 flex justify-start">
             <h2
-              className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-b from-white to-black bg-clip-text text-transparent z-10 ${poppins.className}`}
+              className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold bg-gradient-to-b from-white to-black bg-clip-text text-transparent z-10 ${poppins.className}`}
             >
               NOVA
             </h2>
