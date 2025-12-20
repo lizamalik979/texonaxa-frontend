@@ -2,7 +2,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Poppins } from "next/font/google";
 import "../../components/css/blog-content.css";
-import Link from "next/link";
+import { parseBlogContent } from '@/utils/parseBlogContent';
+import BlogContentWithTOC from "@/app/components/blog/BlogContentWithTOC";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -166,15 +167,28 @@ export default async function BlogPostPage({
     });
   };
 
+  // Parse content into sections on the server
+  const contentSections = parseBlogContent(post.content);
+
+  // Parse additional fields sections
+  const additionalFieldSections: Record<string, ReturnType<typeof parseBlogContent>> = {};
+  if (post.additionalFields) {
+    Object.entries(post.additionalFields).forEach(([key, field]) => {
+      if (field && typeof field === 'object' && field.value) {
+        additionalFieldSections[key] = parseBlogContent(field.value);
+      }
+    });
+  }
+
   return (
     <div className="relative">
-      <article className="min-h-screen max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header Section */}
+      <article className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header Section - Full Width */}
         <header className="mb-8">
           {/* Categories */}
           {post.category && post.category.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4">
-              {post.category.map((cat) => (
+              {post.category.reverse().map((cat) => (
                 <span
                   key={cat.id}
                   className={`px-3 py-1 rounded-full bg-[#FEE39A]/20 text-[#FEE39A] text-sm ${poppins.className}`}
@@ -216,66 +230,15 @@ export default async function BlogPostPage({
               />
             </div>
           )}
-
-          {/* Table of Contents - Below Image
-          <TableOfContents content={post.content} /> */}
         </header>
 
-        {/* Content Section */}
-        <div className="blog-content-wrapper">
-          <div
-            className="blog-content"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
-        </div>
-
-        {/* Additional Fields */}
-        {post.additionalFields && Object.keys(post.additionalFields).length > 0 && (
-          <div className="mt-12 space-y-8">
-            {Object.entries(post.additionalFields).map(([key, field]) => (
-              <div key={key} className="border-t border-white/10 pt-8">
-                {field.label && (
-                  <h2 className={`text-2xl font-bold text-white mb-4 ${poppins.className}`}>
-                    {field.label}
-                  </h2>
-                )}
-                {field.value && (
-                  <div className="blog-content-wrapper">
-                    <div
-                      className="blog-content"
-                      dangerouslySetInnerHTML={{ __html: field.value }}
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* FAQ Section - Enhanced with better checking */}
-        {post.faq_items && Array.isArray(post.faq_items) && post.faq_items.length > 0 ? (
-          <div className="mt-12 border-t border-white/10 pt-8">
-            <h2 className={`text-3xl font-bold text-white mb-6 ${poppins.className}`}>
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-6">
-              {post.faq_items.map((faq, index) => (
-                <div key={index} className="bg-white/5 rounded-lg p-6">
-                  {faq.question && (
-                    <h3 className={`text-xl font-semibold text-white mb-3 ${poppins.className}`}>
-                      {faq.question}
-                    </h3>
-                  )}
-                  {faq.answer && (
-                    <div className={`text-gray-300 leading-relaxed whitespace-pre-line ${poppins.className}`}>
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : null}
+        {/* Content with TOC - 2 Column Layout */}
+        <BlogContentWithTOC
+          contentSections={contentSections}
+          additionalFields={post.additionalFields}
+          additionalFieldSections={additionalFieldSections}
+          faqItems={post.faq_items || []}
+        />
       </article>
     </div>
   );

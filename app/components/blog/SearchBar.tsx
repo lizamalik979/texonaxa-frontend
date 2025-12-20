@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Search, X, Loader2, ExternalLink, ArrowRight } from 'lucide-react';
 import { Poppins } from 'next/font/google';
+import Link from 'next/link';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -62,7 +63,7 @@ export default function SearchBar({ onSearchResults, onSearchError, onCategoryCl
         const fetchCategories = async () => {
             setIsLoadingCategories(true);
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3000";
+                const apiUrl = process.env.BACKEND_API_URL || "http://localhost:3000";
                 const response = await fetch(`${apiUrl}/api/post/client/filter`, {
                     method: 'GET',
                     headers: {
@@ -103,7 +104,7 @@ export default function SearchBar({ onSearchResults, onSearchError, onCategoryCl
 
         setIsLoading(true);
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3000";
+            const apiUrl = process.env.BACKEND_API_URL || "http://localhost:3000";
             const response = await fetch(`${apiUrl}/api/post/client/search?q=${encodeURIComponent(searchQuery)}`, {
                 method: 'GET',
                 headers: {
@@ -237,30 +238,33 @@ export default function SearchBar({ onSearchResults, onSearchError, onCategoryCl
 
             {/* Frequently Searched Categories Section */}
             <div className="max-w-[1200px] mx-auto mt-6">
-                <div className="flex items-center justify-between mb-4">
-                    <p className={`text-base font-bold text-white ${poppins.className}`}>
+                <div className="flex flex-wrap items-center gap-3 mb-6">
+                    <p className={`text-base font-bold text-white flex-shrink-0 ${poppins.className}`}>
                         Frequently Searched:
                     </p>
-                </div>
 
-                {/* Category Tags */}
-                {isLoadingCategories ? (
-                    <div className="flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
-                        <p className={`text-sm text-gray-400 ${poppins.className}`}>Loading categories...</p>
-                    </div>
-                ) : categories.length > 0 ? (
-                    <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-                        {categories.map((category) => (
-                            <button
+                    {/* Category Tags or Skeleton */}
+                    {isLoadingCategories ? (
+                        <>
+                            {[...Array(5)].map((_, index) => (
+                                <div
+                                    key={`skeleton-${index}`}
+                                    className="h-9 w-40 rounded-full bg-gray-800/50  animate-pulse"
+                                />
+                            ))}
+                        </>
+                    ) : categories.length > 0 ? (
+                        categories.map((category) => (
+                            <Link
                                 key={category.id}
-                                className={`px-4 py-2 text-sm rounded-full bg-gray-800/50 border border-white/10 text-gray-300 hover:bg-gray-700/50 hover:text-white hover:border-white/20 transition-all cursor-pointer ${poppins.className}`}
+                                href={`/blog/category/${category.slug}`}
+                                className={`px-4 py-2 text-xs rounded-full bg-gray-800/50 border border-white/10 text-gray-300 hover:bg-gray-700/50 hover:text-white hover:border-white/20 transition-all cursor-pointer flex-shrink-0 ${poppins.className}`}
                             >
                                 {category.name}
-                            </button>
-                        ))}
-                    </div>
-                ) : null}
+                            </Link>
+                        ))
+                    ) : null}
+                </div>
             </div>
         </div>
     );
