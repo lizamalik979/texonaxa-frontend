@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import dynamic from "next/dynamic";
 import HeroSection from "./components/HeroSection";
 import LazyLoadSection from "./components/common/LazyLoadSection";

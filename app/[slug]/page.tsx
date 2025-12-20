@@ -5,10 +5,13 @@ import ServiceIntro from "../components/service/ServiceIntro";
 import ServiceDetails from "../components/service/ServiceDetails";
 import OurTechnologies from "../components/service/OurTechnologies";
 import FAQ from "../components/service/FAQ";
+import ServiceOurServices from "../components/service/ServiceOurServices";
+import WhyChoose from "../components/service/WhyChoose";
+import WhyInvest from "../components/service/WhyInvest";
 import { ServiceApiResponse } from "../types/service";
 import OurStory from "../components/OurStory";
-import OurServices from "../components/OurServices";
 import WorkTogether from "../components/WorkTogether";
+
 
 async function getServiceData(slug: string): Promise<ServiceApiResponse | null> {
   try {
@@ -84,8 +87,14 @@ export default async function ServicePage({
           heroImgUrl={data.heroSection.heroImgUrl}
         />
       )}
-      <OurStory/>
-      <OurServices/>
+      <OurStory />
+      {data.pageType === "service" && data.ourServicesSection && (
+        <ServiceOurServices
+          serviceHeading={data.ourServicesSection.serviceHeading}
+          serviceDescription={data.ourServicesSection.serviceDescription}
+          serviceCards={data.ourServicesSection.serviceCards}
+        />
+      )}
       {data.serviceIntroSection && (
         <ServiceIntro
           serviceHeading={data.serviceIntroSection.serviceHeading}
@@ -99,7 +108,29 @@ export default async function ServicePage({
           serviceCards={data.serviceDetailSection.serviceCards}
         />
       )}
-      <OurTechnologies />
+      {data.whyChooseSection && (
+        <WhyChoose
+          sectionHeading={data.whyChooseSection.sectionHeading}
+          sectionDescription={data.whyChooseSection.sectionDescription}
+          sectionCards={data.whyChooseSection.sectionCards}
+        />
+      )}
+      {data.whyInvestSection && (
+        <WhyInvest
+          sectionHeading={data.whyInvestSection.sectionHeading}
+          sectionDescription={data.whyInvestSection.sectionDescription}
+          sectionCards={data.whyInvestSection.sectionCards}
+        />
+      )}
+      {
+        data.technologySection && (
+          <OurTechnologies 
+          heading={data.technologySection.heading}
+          description={data.technologySection.description}
+          technologyImages={data.technologySection.technologyImages}/>
+        )
+      }
+      
       {data.faqSection && (
         <FAQ
           faqHeading={data.faqSection.faqHeading}
@@ -112,3 +143,6 @@ export default async function ServicePage({
     </main>
   );
 }
+
+
+

@@ -1,6 +1,7 @@
 "use client";
 
 import { poppins } from "../fonts";
+import OpenLeadModalButton from "./leads/OpenLeadModalButton";
 
 export default function WorkTogether() {
   return (
@@ -13,11 +14,11 @@ export default function WorkTogether() {
           </h2>
 
           {/* Button */}
-          <button className="px-5 py-3 bg-amber-200 rounded-lg inline-flex justify-center items-center gap-2.5 hover:scale-105 transition-all duration-300">
+          <OpenLeadModalButton className="px-5 py-3 bg-amber-200 rounded-lg inline-flex justify-center items-center gap-2.5 hover:scale-105 transition-all duration-300">
             <span className={`text-center text-black text-xl sm:text-2xl font-medium ${poppins.className}`}>
               Get in touch
             </span>
-          </button>
+          </OpenLeadModalButton>
 
         </div>
       </div>
