@@ -63,7 +63,7 @@ export default function SearchBar({ onSearchResults, onSearchError, onCategoryCl
         const fetchCategories = async () => {
             setIsLoadingCategories(true);
             try {
-                const apiUrl = process.env.BACKEND_API_URL || "http://localhost:3000";
+                const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001";
                 const response = await fetch(`${apiUrl}/api/post/client/filter`, {
                     method: 'GET',
                     headers: {
@@ -104,7 +104,7 @@ export default function SearchBar({ onSearchResults, onSearchError, onCategoryCl
 
         setIsLoading(true);
         try {
-            const apiUrl = process.env.BACKEND_API_URL || "http://localhost:3000";
+            const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001";
             const response = await fetch(`${apiUrl}/api/post/client/search?q=${encodeURIComponent(searchQuery)}`, {
                 method: 'GET',
                 headers: {
@@ -216,7 +216,7 @@ export default function SearchBar({ onSearchResults, onSearchError, onCategoryCl
                             <div className="py-2">
                                 {results.map((post) => (
                                     <a
-                                        key={post.id}
+                                        key={post.slug}
                                         href={`/blog/${post.slug}`}
                                         className="block px-4 py-3 flex items-center justify-between hover:bg-white/9 transition-colors border-b border-white/5 last:border-b-0"
                                     >
