@@ -124,7 +124,7 @@ export default function OurServices() {
   return (
     <div className="relative min-h-screen">
       {/* Header Section */}
-      <div className="px-4 md:px-8 mb-16">
+      <div className="px-4 md:px-8 pt-12 md:pt-16 lg:pt-20 mb-16">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 ${poppins.className}`}>
             Our Services
@@ -137,7 +137,7 @@ export default function OurServices() {
 
       {/* Desktop: Horizontal scroll container */}
       <div className="hidden md:block h-[120vh]" ref={containerRef}>
-        <div className="sticky top-0 py-20 flex items-center overflow-hidden">
+        <div className="sticky top-0 py-12 md:py-20 flex items-center overflow-hidden">
           <div
             ref={cardsRef}
             className="flex gap-12 px-8"
