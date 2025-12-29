@@ -124,7 +124,7 @@ export default function OurServices() {
   return (
     <div className="relative min-h-screen">
       {/* Header Section */}
-      <div className="px-4 md:px-8 mb-16">
+      <div className="px-4 md:px-8 pt-12 md:pt-16 lg:pt-20 mb-16">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 ${poppins.className}`}>
             Our Services
@@ -137,7 +137,7 @@ export default function OurServices() {
 
       {/* Desktop: Horizontal scroll container */}
       <div className="hidden md:block h-[120vh]" ref={containerRef}>
-        <div className="sticky top-0 py-20 flex items-center overflow-hidden">
+        <div className="sticky top-0 py-12 md:py-20 flex items-center overflow-hidden">
           <div
             ref={cardsRef}
             className="flex gap-12 px-8"
@@ -145,7 +145,7 @@ export default function OurServices() {
               width: isMounted ? `${cards.length * 500}px` : `${cards.length * 400}px`,
               willChange: 'transform'
             }}
-          >
+        >
             {cards.map((card) => (
               <div
                 key={card.id}
@@ -156,7 +156,7 @@ export default function OurServices() {
                 }`}
                 onMouseEnter={() => setHoveredCard(card.id)}
                 onMouseLeave={() => setHoveredCard(null)}
-              >
+            >
                 {/* Placeholder color background */}
                 <div className={`absolute inset-0 ${card.placeholderColor}`}></div>
                 
@@ -237,15 +237,15 @@ export default function OurServices() {
                   {/* Title */}
                   <h3 className={`text-xl font-bold ${poppins.className}`}>
                     {card.title}
-                  </h3>
+                </h3>
 
-                  {/* More Details Button */}
+                {/* More Details Button */}
                   <Link href={card.href}>
-                    <button className={`w-fit py-3 px-6 bg-amber-200 rounded-lg hover:scale-105 transition-all duration-300 ${poppins.className}`}>
-                      <span className="text-black text-base font-medium">
-                        More details
-                      </span>
-                    </button>
+                <button className={`w-fit py-3 px-6 bg-amber-200 rounded-lg hover:scale-105 transition-all duration-300 ${poppins.className}`}>
+                  <span className="text-black text-base font-medium">
+                    More details
+                  </span>
+                </button>
                   </Link>
                 </div>
               </div>

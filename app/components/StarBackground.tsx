@@ -97,7 +97,7 @@ export default function StarBackground() {
 
     // Create stars
     const stars: BackgroundStar[] = [];
-    const starCount = Math.min(150, Math.floor((window.innerWidth * window.innerHeight) / 12000));
+    const starCount = Math.min(50, Math.floor((window.innerWidth * window.innerHeight) / 12000));
 
     for (let i = 0; i < starCount; i++) {
       stars.push({
@@ -350,34 +350,11 @@ export default function StarBackground() {
   const spawnMeteor = useCallback((x: number, y: number) => {
     if (!appRef.current || !isReadyRef.current) return;
 
-    const MAX_METEORS = 12;
+    const MAX_METEORS = 6;
     if (meteorsRef.current.length >= MAX_METEORS) return;
 
-    const screenMidX = window.innerWidth / 2;
-    const directionX = x > screenMidX ? -1 : 1;
-
-    const rand = Math.random();
-    const meteorCount = rand < 0.6 ? 1 : rand < 0.9 ? 2 : 3;
-
+    // Always create only 1 meteor
     createSingleMeteor(x, y, 0, 0);
-
-    if (meteorCount >= 2) {
-      const offset2X = -directionX * 80 + (Math.random() - 0.5) * 30;
-      const offset2Y = -60 + (Math.random() - 0.5) * 20;
-      const angle2 = 0.035;
-      setTimeout(() => {
-        createSingleMeteor(x + offset2X, y + offset2Y, 0.02, angle2);
-      }, 80);
-    }
-
-    if (meteorCount >= 3) {
-      const offset3X = directionX * 70 + (Math.random() - 0.5) * 30;
-      const offset3Y = -100 + (Math.random() - 0.5) * 20;
-      const angle3 = 0.052;
-      setTimeout(() => {
-        createSingleMeteor(x + offset3X, y + offset3Y, 0.04, angle3);
-      }, 150);
-    }
   }, [createSingleMeteor]);
 
   // Use window event listeners for mouse tracking

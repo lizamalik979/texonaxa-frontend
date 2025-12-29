@@ -1,6 +1,7 @@
 "use client";
 
-
+import Link from "next/link";
+import { Instagram, Facebook, Linkedin } from "lucide-react";
 import ThreeD from "../ThreeD";
 import { poppins } from "../../fonts";
 
@@ -88,7 +89,7 @@ export default function Footer() {
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <p className={`text-center sm:text-left text-white text-lg font-medium leading-relaxed ${poppins.className}`}>
-                  98685 49839
+                8209571074
                 </p>
               </div>
               <div className="flex flex-col gap-2">
@@ -96,16 +97,46 @@ export default function Footer() {
                   Email ID
                 </h4>
                 <p className={`text-center sm:text-left text-white text-lg font-medium leading-relaxed ${poppins.className}`}>
-                  98685 49839
+                info@texonaxa.com
                 </p>
               </div>
               <div className="flex flex-col gap-2">
                 <h4 className={`text-center sm:text-left text-neutral-400 text-xl font-medium leading-tight ${poppins.className}`}>
                   Follow us
                 </h4>
-                <p className={`text-center sm:text-left text-white text-lg font-medium leading-relaxed ${poppins.className}`}>
-                  98685 49839
-                </p>
+                <Link 
+                  href="https://www.instagram.com/texonaxa/?igsh=MTMxdjh5bTEzemFpcA%3D%3D&utm_source=qr#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-center sm:text-left inline-flex items-center gap-2 text-white hover:text-amber-200 transition-colors duration-300"
+                >
+                  <Instagram className="w-6 h-6" />
+                  <span className={`text-lg font-medium leading-relaxed ${poppins.className}`}>
+                    Instagram
+                  </span>
+                </Link>
+                <Link 
+                  href="https://www.linkedin.com/company/texonaxa/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-center sm:text-left inline-flex items-center gap-2 text-white hover:text-amber-200 transition-colors duration-300"
+                >
+                  <Linkedin className="w-6 h-6" />
+                  <span className={`text-lg font-medium leading-relaxed ${poppins.className}`}>
+                    Linkedin
+                  </span>
+                </Link>
+                <Link 
+                  href="https://www.facebook.com/texonaxa/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-center sm:text-left inline-flex items-center gap-2 text-white hover:text-amber-200 transition-colors duration-300"
+                >
+                  <Facebook className="w-6 h-6" />
+                  <span className={`text-lg font-medium leading-relaxed ${poppins.className}`}>
+                    Facebook
+                  </span>
+                </Link>
               </div>
             </div>
           </div>
