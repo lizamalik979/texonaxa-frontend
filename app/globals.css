@@ -12,6 +12,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-poppins);
   --font-mono: var(--font-orbitron);
+  --breakpoint-1090: 1090px;
 }
 
 .font-orbitron {
