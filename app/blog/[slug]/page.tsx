@@ -104,7 +104,7 @@ export async function generateMetadata({
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://texonaxa-cms.vercel.app';
   const postUrl = `${siteUrl}/blog/${post.slug}`;
   const imageUrl = post.featuredImage || `${siteUrl}/images/default-blog.jpg`;
 
@@ -117,7 +117,7 @@ export async function generateMetadata({
       title: post.title,
       description: post.excerpt || post.title,
       url: postUrl,
-      siteName: "Your Site Name",
+      siteName: "Texonaxa CMS",
       images: [
         {
           url: imageUrl,
@@ -182,7 +182,7 @@ export default async function BlogPostPage({
 
   return (
     <div className="relative">
-      <article className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <article className="min-h-screen mt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header Section - Full Width */}
         <header className="mb-8">
           {/* Categories */}
