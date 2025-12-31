@@ -5,6 +5,8 @@ import Footer from "./components/common/Footer";
 import Header from "./components/common/Header";
 import LeadModalProvider from "./components/leads/LeadModalProvider";
 import HeaderMenuProvider from "./contexts/HeaderMenuContext";
+import { SectionProvider } from "./contexts/SectionContext";
+import MouseGradient from "./components/common/MouseGradient";
 
 export const metadata: Metadata = {
   title: "Shooting Stars",
@@ -26,9 +28,12 @@ export default function RootLayout({
         <div className="relative z-10">
           <HeaderMenuProvider>
             <LeadModalProvider>
-              <Header />
-              {children}
-              <Footer />
+              <SectionProvider>
+                <MouseGradient />
+                <Header />
+                {children}
+                <Footer />
+              </SectionProvider>
             </LeadModalProvider>
           </HeaderMenuProvider>
         </div>

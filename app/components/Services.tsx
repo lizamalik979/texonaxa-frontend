@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { orbitron, poppins } from "../fonts";
+import { useSection } from "../contexts/SectionContext";
 
 interface ServiceSection {
   title: string;
@@ -73,6 +74,7 @@ const Services = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { setActiveSection: setSectionContext } = useSection();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -166,6 +168,8 @@ const Services = () => {
         className="min-h-screen py-16 px-6"
         initial="hidden"
         animate="visible"
+        onMouseEnter={() => setSectionContext("services")}
+        onMouseLeave={() => setSectionContext("default")}
       >
         <div className="max-w-[1920px] mx-auto">
           <motion.h2
@@ -223,6 +227,8 @@ const Services = () => {
       className="relative"
       initial="hidden"
       animate="visible"
+      onMouseEnter={() => setSectionContext("services")}
+      onMouseLeave={() => setSectionContext("default")}
     >
       {/* Scroll trigger sections - positioned at start, stacked vertically - only when sticky */}
       {isSticky && (
@@ -378,13 +384,13 @@ const Services = () => {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
               >
-                <div className="relative w-full max-w-[486px]">
+                <div className="relative w-full max-w-[486px] lg:max-w-[520px] xl:max-w-[550px]">
                   {/* Gradient glow behind the card */}
                   <div className="absolute -inset-4 bg-gradient-to-br from-yellow-400/30 via-green-400/20 to-purple-500/30 rounded-3xl blur-2xl opacity-60" />
 
                   {/* Card */}
                   <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-yellow-200/90 via-green-200/80 to-blue-200/70 p-1">
-                    <div className="relative aspect-square max-h-[485px] rounded-3xl overflow-hidden">
+                    <div className="relative aspect-square rounded-3xl overflow-hidden">
                       {/* Color placeholder */}
                       <div className="absolute inset-0">
                         {sections.map((section, index) => (

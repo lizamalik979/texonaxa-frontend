@@ -1,13 +1,19 @@
 "use client";
 
 import { poppins } from "../fonts";
+import { useSection } from "../contexts/SectionContext";
 
 export default function AboutUs() {
+  const { setActiveSection } = useSection();
   const text =
     "We walk the talk. What makes us different from others is our team of professionals whom we call ‘Digi Knights’. With the shield of experience and commitment in their respective field, they guard our brand’s marketing warfare and do troubleshooting when needed the most. On the forefront, whether it is our Founder, Co-founder or leaders in their specific fields of marketing, servicing, designing, writing and visualising everything is monitored under a fine magnifying glass of perfection. Whether it’s their direct involvement, precise feedbacks and suggestions in sync with trends or sharing a monthly report with clients its a teamwork. Clarity, reliability, and transparency are upheld at DigiStreet Media between employees, employers, and clients on all grounds and its in consonance with our approach.";
 
   return (
-    <section className="w-full py-16 sm:py-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
+    <section 
+      className="w-full py-16 sm:py-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32"
+      onMouseEnter={() => setActiveSection("about")}
+      onMouseLeave={() => setActiveSection("default")}
+    >
       <div className="mx-auto max-w-[1920px] flex flex-col lg:flex-row gap-10 lg:gap-20 items-center">
         {/* Image placeholder */}
         <div className="w-full max-w-[451px] h-[451px] aspect-square rounded-3xl overflow-hidden flex-shrink-0">

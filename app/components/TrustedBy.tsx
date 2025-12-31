@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Marquee from "@/components/ui/marquee";
 import { poppins } from "../fonts";
+import { useSection } from "../contexts/SectionContext";
 
 const logos = [
   {
@@ -32,8 +33,13 @@ const logos = [
 ];
 
 export default function TrustedBy() {
+  const { setActiveSection } = useSection();
   return (
-    <section className="w-full sm:py-10 md:py-16">
+    <section 
+      className="w-full sm:py-10 md:py-16"
+      onMouseEnter={() => setActiveSection("trustedBy")}
+      onMouseLeave={() => setActiveSection("default")}
+    >
       <div className="mx-auto">
 
         {/* Marquee */}

@@ -41,7 +41,7 @@ export default function ThreeD() {
     maxRings: 3,
     initialPosition: { lat: 22.3193, lng: 114.1694 },
     autoRotate: true,
-    autoRotateSpeed: 0.3,
+    autoRotateSpeed: 0.5,
   };
   const colors = ["#06b6d4", "#3b82f6", "#6366f1"];
   const sampleArcs = [
@@ -185,7 +185,7 @@ export default function ThreeD() {
 
         {/* Copyright text */}
         <p className={`text-center text-xs sm:text-sm md:text-base text-white/50 ${poppins.className} mt-4 sm:mt-8`}>
-          @2025 Taxa Nova. Click for privacy & term & condition
+          @2025 Texo Naxa. Click for privacy & term & condition
         </p>
       </div>
     </section>

@@ -271,7 +271,7 @@ export default function Footer() {
                         transition={{ duration: 0.2 }}
                         className="overflow-hidden mt-3"
                       >
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 items-center sm:items-start">
                           {menuItem.child_menu.map((childItem, childIndex) => {
                             const itemId = `${sectionId}-item-${childIndex}`;
                             const hasSubChild = hasChildren(childItem);

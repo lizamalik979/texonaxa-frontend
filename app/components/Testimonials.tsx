@@ -9,6 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { poppins } from "../fonts";
+import { useSection } from "../contexts/SectionContext";
 
 type Testimonial = {
   id: number;
@@ -85,8 +86,13 @@ const fadeInUp = {
 };
 
 export default function Testimonials() {
+  const { setActiveSection } = useSection();
   return (
-    <section className="w-full py-16 sm:py-20 px-4 sm:px-6 lg:px-8  text-white">
+    <section 
+      className="w-full py-16 sm:py-20 px-4 sm:px-6 lg:px-8  text-white"
+      onMouseEnter={() => setActiveSection("testimonials")}
+      onMouseLeave={() => setActiveSection("default")}
+    >
       <div className="mx-auto ">
         {/* Header */}
         <motion.div
