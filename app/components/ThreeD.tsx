@@ -177,7 +177,7 @@ export default function ThreeD() {
             <h2
               className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold bg-gradient-to-b from-white to-black bg-clip-text text-transparent z-10 ${poppins.className}`}
             >
-              NEXA
+              NAXA
             </h2>
           </div>
 
