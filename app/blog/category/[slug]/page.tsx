@@ -115,7 +115,7 @@ export async function generateMetadata({
       title: `${categoryName} | Blog`,
       description: `Browse all blog posts in the ${categoryName} category`,
       type: "website",
-      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com'}/blog/category/${slug}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://texonaxa-cms.vercel.app'}/blog/category/${slug}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -123,7 +123,7 @@ export async function generateMetadata({
       description: `Browse all blog posts in the ${categoryName} category`,
     },
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com'}/blog/category/${slug}`,
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://texonaxa-cms.vercel.app'}/blog/category/${slug}`,
     },
   };
 }

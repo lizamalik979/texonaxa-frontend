@@ -15,8 +15,8 @@ import WorkTogether from "../components/WorkTogether";
 
 async function getServiceData(slug: string): Promise<ServiceApiResponse | null> {
   try {
-    const apiUrl = process.env.BACKEND_API_URL || "http://localhost:3000";
-    const response = await fetch(`${apiUrl}/api/services/${slug}`, {
+    const apiUrl = process.env.BACKEND_API_URL || "https://texonaxa-cms.vercel.app";
+    const response = await fetch(`${apiUrl}/api/services/client/${slug}`, {
       cache: "no-store",
     });
 

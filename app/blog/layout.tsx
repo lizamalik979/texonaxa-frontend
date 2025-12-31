@@ -64,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Blog | Texonasa",
       description: "Read our latest blog posts, insights, and updates",
       type: "website",
-      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com'}/blog`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://texonaxa-cms.vercel.app'}/blog`,
     },
     twitter: {
       card: "summary_large_image",
@@ -72,7 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: "Read our latest blog posts, insights, and updates",
     },
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com'}/blog`,
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://texonaxa-cms.vercel.app'}/blog`,
     },
   };
 }
@@ -84,7 +84,7 @@ function generateBlogSchema(blogs: BlogPost[]) {
     "@type": "Blog",
     "name": "Blog | Your Company Name",
     "description": "Read our latest blog posts, insights, and updates",
-    "url": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com'}/blog`,
+    "url": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://texonaxa-cms.vercel.app'}/blog`,
     "blogPost": blogs.map((blog) => ({
       "@type": "BlogPosting",
       "headline": blog.title || "",
@@ -95,7 +95,7 @@ function generateBlogSchema(blogs: BlogPost[]) {
         "@type": "Person",
         "name": blog.author?.username || blog.author?.email || "Your Company",
       },
-      "url": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com'}/blog/${blog.id}`,
+      "url": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://texonaxa-cms.vercel.app'}/blog/${blog.id}`,
     })),
   };
 

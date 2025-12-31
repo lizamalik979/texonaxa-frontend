@@ -21,7 +21,7 @@ const SERVICE_OPTIONS = [
 
 export default function ContactLeadForm() {
   const apiBase = useMemo(
-    () => process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3000",
+    () => process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://texonaxa-cms.vercel.app",
     []
   );
 
