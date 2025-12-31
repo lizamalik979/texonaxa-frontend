@@ -34,7 +34,7 @@ export default function LeadPopupForm({
 }) {
   const apiBase = useMemo(
     // Client components can only read NEXT_PUBLIC_* env vars at runtime
-    () => process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3000",
+    () => process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://texonaxa-cms.vercel.app",
     []
   );
 
