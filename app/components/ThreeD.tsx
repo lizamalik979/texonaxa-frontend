@@ -41,7 +41,7 @@ export default function ThreeD() {
     maxRings: 3,
     initialPosition: { lat: 22.3193, lng: 114.1694 },
     autoRotate: true,
-    autoRotateSpeed: 1.0,
+    autoRotateSpeed: 0.5,
   };
   const colors = ["#06b6d4", "#3b82f6", "#6366f1"];
   const sampleArcs = [
@@ -121,24 +121,24 @@ export default function ThreeD() {
   ];
 
   return (
-    <section className="w-full text-white px-4 sm:px-6 lg:px-8 overflow-hidden py-10 relative z-20">
-      <div className="max-w-7xl mx-auto flex flex-col items-center gap-8">
+    <section className="w-full text-white px-4 sm:px-6 lg:px-8 overflow-hidden py-6 sm:py-10 relative z-20">
+      <div className="max-w-7xl mx-auto flex flex-col items-center gap-4 sm:gap-8">
 
         {/* Flex container for Text - Globe - Text */}
-        <div className="w-full flex items-center justify-center  relative h-[300px] sm:h-[400px]">
+        <div className="w-full flex items-center justify-center relative h-[200px] sm:h-[300px] md:h-[400px]">
 
-          {/* TAXA - Left Side */}
-          <div className="flex-1 flex justify-end">
+          {/* TEXO - Left Side */}
+          <div className="flex-1 flex justify-end pr-1 sm:pr-2 md:pr-4">
             <h2
-              className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold bg-gradient-to-b from-white to-black bg-clip-text text-transparent z-10 ${poppins.className}`}
+              className={`text-2xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-white z-10 ${poppins.className}`}
             >
-              TAXA
+              TEXO
             </h2>
           </div>
 
           {/* Globe - Center */}
           <motion.div
-            className="w-full h-full max-w-[220px] max-h-[220px] sm:max-w-[350px] sm:max-h-[350px] z-30 relative flex items-center justify-center shrink-0"
+            className="w-full h-full max-w-[120px] max-h-[120px] sm:max-w-[220px] sm:max-h-[220px] md:max-w-[350px] md:max-h-[350px] z-30 relative flex items-center justify-center shrink-0"
             initial={{ 
               opacity: 0, 
               scale: 0.3,
@@ -172,20 +172,20 @@ export default function ThreeD() {
             </div>
           </motion.div>
 
-          {/* NOVA - Right Side */}
-          <div className="flex-1 flex justify-start">
+          {/* NAXA - Right Side */}
+          <div className="flex-1 flex justify-start pl-1 sm:pl-2 md:pl-4">
             <h2
-              className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold bg-gradient-to-b from-white to-black bg-clip-text text-transparent z-10 ${poppins.className}`}
+              className={`text-2xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-white z-10 ${poppins.className}`}
             >
-              NOVA
+              NAXA
             </h2>
           </div>
 
         </div>
 
         {/* Copyright text */}
-        <p className={`text-center text-sm sm:text-base text-white/50 ${poppins.className} mt-8`}>
-          @2025 Taxa Nova. Click for privacy & term & condition
+        <p className={`text-center text-xs sm:text-sm md:text-base text-white/50 ${poppins.className} mt-4 sm:mt-8`}>
+          @2025 Texo Naxa. Click for privacy & term & condition
         </p>
       </div>
     </section>

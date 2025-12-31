@@ -32,8 +32,10 @@ interface BlogApiResponse {
   posts: BlogPost[];
   count: number;
 }
+import { useSection } from "../contexts/SectionContext";
 
 export default function DigitalGrowth() {
+  const { setActiveSection } = useSection();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -91,23 +93,25 @@ export default function DigitalGrowth() {
 
   return (
     <motion.section
-      className="w-full py-20 px-4"
+      className="w-full py-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
+      onMouseEnter={() => setActiveSection("digitalGrowth")}
+      onMouseLeave={() => setActiveSection("default")}
     >
-      <motion.div className="max-w-7xl mx-auto" variants={fadeInUp} custom={0}>
+      <motion.div className="max-w-[1920px] mx-auto" variants={fadeInUp} custom={0}>
         {/* Header */}
         <motion.div className="text-center mb-16" variants={fadeInUp} custom={0.05}>
           <motion.h2
-            className={`text-2xl sm:text-3xl md:text-4xl px-8 font-bold text-white mb-6 ${poppins.className}`}
+            className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 ${poppins.className}`}
             variants={fadeInUp}
             custom={0.08}
           >
             Fresh Perspectives on Branding & Digital Growth
           </motion.h2>
           <motion.p
-            className={`max-w-7xl mx-auto text-white text-base px-8 md:text-xl opacity-80 ${poppins.className}`}
+            className={`text-white text-base md:text-xl opacity-80 ${poppins.className}`}
             variants={fadeInUp}
             custom={0.12}
           >
@@ -117,7 +121,7 @@ export default function DigitalGrowth() {
 
         {/* Carousel */}
         <motion.div
-          className="relative px-12"
+          className="relative"
           variants={fadeInUp}
           custom={0.15}
           initial="hidden"

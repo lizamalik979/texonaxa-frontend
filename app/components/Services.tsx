@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { orbitron, poppins } from "../fonts";
+import { useSection } from "../contexts/SectionContext";
 
 interface ServiceSection {
   title: string;
@@ -68,11 +69,12 @@ const sections: ServiceSection[] = [
   },
 ];
 
-
 const Services = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
   const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { setActiveSection: setSectionContext } = useSection();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -85,9 +87,9 @@ const Services = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Intersection Observer for scroll detection
+  // Intersection Observer for scroll detection - only when sticky
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile || !isSticky) return;
 
     const observers: IntersectionObserver[] = [];
 
@@ -116,7 +118,21 @@ const Services = () => {
     return () => {
       observers.forEach((observer) => observer.disconnect());
     };
-  }, [isMobile]);
+  }, [isMobile, isSticky]);
+
+  const handleServiceClick = (index: number) => {
+    setActiveSection(index);
+    setIsSticky(true);
+    // Scroll to activate sticky view
+    setTimeout(() => {
+      if (triggerRefs.current[index]) {
+        triggerRefs.current[index]?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 100);
+  };
 
   const handlePrev = () => {
     const newIndex = activeSection > 0 ? activeSection - 1 : sections.length - 1;
@@ -152,8 +168,10 @@ const Services = () => {
         className="min-h-screen py-16 px-6"
         initial="hidden"
         animate="visible"
+        onMouseEnter={() => setSectionContext("services")}
+        onMouseLeave={() => setSectionContext("default")}
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[1920px] mx-auto">
           <motion.h2
             className={`text-3xl md:text-4xl font-medium text-white mb-4 ${poppins.className}`}
             variants={fadeInUp}
@@ -209,28 +227,32 @@ const Services = () => {
       className="relative"
       initial="hidden"
       animate="visible"
+      onMouseEnter={() => setSectionContext("services")}
+      onMouseLeave={() => setSectionContext("default")}
     >
-      {/* Scroll trigger sections - positioned at start, stacked vertically */}
-      <div className="absolute top-0 left-0 right-0">
-        {sections.map((_, index) => (
-          <div
-            key={index}
-            ref={(el) => {
-              triggerRefs.current[index] = el;
-            }}
-            className="absolute left-0 right-0 h-[50vh]"
-            style={{ top: `${index * 50}vh` }}
-            aria-hidden="true"
-          />
-        ))}
-      </div>
+      {/* Scroll trigger sections - positioned at start, stacked vertically - only when sticky */}
+      {isSticky && (
+        <div className="absolute top-0 left-0 right-0">
+          {sections.map((_, index) => (
+            <div
+              key={index}
+              ref={(el) => {
+                triggerRefs.current[index] = el;
+              }}
+              className="absolute left-0 right-0 h-[50vh]"
+              style={{ top: `${index * 50}vh` }}
+              aria-hidden="true"
+            />
+          ))}
+        </div>
+      )}
 
-      {/* Sticky container that stays in view */}
-      <div className="sticky top-0 h-screen flex flex-col justify-center">
+      {/* Container - sticky only when a service is clicked */}
+      <div className={`${isSticky ? 'sticky' : 'relative'} top-0 h-screen flex flex-col justify-center`}>
         {/* Header */}
-        <div className="pb-8 px-8 lg:px-16">
+        <div className="pb-8 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
           <motion.div
-            className="max-w-7xl mx-auto"
+            className="max-w-[1920px] mx-auto"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.4 }}
@@ -243,7 +265,7 @@ const Services = () => {
               Integrated Digital Solutions: Design, Code, & Growth
             </motion.h2>
             <motion.p
-              className={`text-white/70 text-xl lg:text-2xl max-w-7xl ${poppins.className}`}
+              className={`text-white/70 text-xl lg:text-2xl ${poppins.className}`}
               variants={fadeInUp}
               custom={0.1}
             >
@@ -253,8 +275,8 @@ const Services = () => {
         </div>
 
         {/* Main content area */}
-        <div className="flex items-center px-8 lg:px-16">
-          <div className="max-w-7xl mx-auto w-full">
+        <div className="flex items-center px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
+          <div className="max-w-[1920px] mx-auto w-full">
             <div className="grid grid-cols-2 gap-8 lg:gap-16 w-full">
               {/* Left side - Navigation Carousel */}
               <motion.div
@@ -318,15 +340,16 @@ const Services = () => {
                           </svg>
                         </button>
 
-                        {/* Service title */}
-                        <span
-                          className={`text-center transition-all duration-700 ease-out cursor-default ${isActive ? "text-white" : "text-white/80"
+                        {/* Service title - clickable */}
+                        <button
+                          onClick={() => handleServiceClick(index)}
+                          className={`text-center transition-all duration-700 ease-out ${isActive ? "text-white cursor-default" : "text-white/80 cursor-pointer hover:text-white"
                             }`}
                         >
                           <span className={`text-xl lg:text-2xl xl:text-3xl font-semibold whitespace-nowrap transition-all duration-700 ${poppins.className}`}>
                             {section.title}
                           </span>
-                        </span>
+                        </button>
 
                         {/* Right arrow - only visible for active */}
                         <button
@@ -361,13 +384,13 @@ const Services = () => {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
               >
-                <div className="relative w-full max-w-[486px]">
+                <div className="relative w-full max-w-[486px] lg:max-w-[520px] xl:max-w-[550px]">
                   {/* Gradient glow behind the card */}
                   <div className="absolute -inset-4 bg-gradient-to-br from-yellow-400/30 via-green-400/20 to-purple-500/30 rounded-3xl blur-2xl opacity-60" />
 
                   {/* Card */}
                   <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-yellow-200/90 via-green-200/80 to-blue-200/70 p-1">
-                    <div className="relative aspect-square max-h-[485px] rounded-3xl overflow-hidden">
+                    <div className="relative aspect-square rounded-3xl overflow-hidden">
                       {/* Color placeholder */}
                       <div className="absolute inset-0">
                         {sections.map((section, index) => (
@@ -400,8 +423,8 @@ const Services = () => {
         </div>
       </div>
 
-      {/* Spacer to match trigger height - 11 sections * 50vh each = 550vh */}
-      <div className="h-[550vh]" />
+      {/* Spacer to match trigger height - only when sticky */}
+      {isSticky && <div className="h-[550vh]" />}
     </motion.section>
   );
 };

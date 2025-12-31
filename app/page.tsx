@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import dynamic from "next/dynamic";
 import HeroSection from "./components/HeroSection";
 import LazyLoadSection from "./components/common/LazyLoadSection";
@@ -44,19 +42,16 @@ export default function Home() {
   return (
     <main>
       <HeroSection />
-      {/* Load sections immediately or with very large rootMargin */}
       <AboutUs />
-      <Services />
-      <LazyLoadSection rootMargin="2000px">
-        <OurServices />
-      </LazyLoadSection>
+      <div className="hidden md:block">
+        <Services />
+      </div>
+      <OurServices />
       <DigitalGrowth />
       <OurStory />
       <TrustedBy />
-      <LazyLoadSection rootMargin="1500px">
-        <Testimonials />
-      </LazyLoadSection>
-      <LazyLoadSection rootMargin="1500px">
+      <Testimonials />
+      <LazyLoadSection >
         <WorkTogether />
       </LazyLoadSection>
     </main>
