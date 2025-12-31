@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { Poppins } from "next/font/google";
 import BlogListing from "@/app/components/blog/BlogListing";
 import Pagination from "@/app/components/blog/Pagination";
@@ -57,7 +56,7 @@ async function getCategoryPosts(
   currentPage: number;
 } | null> {
   try {
-    const apiUrl = process.env.BACKEND_API_URL || "http://localhost:3000";
+    const apiUrl = process.env.BACKEND_API_URL || "https://texonaxa-cms.vercel.app";
 
     // SSR: cache: 'no-store' ensures fresh data on every request
     const response = await fetch(
@@ -137,10 +136,6 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   // Fetch posts for this category (10 posts per page) - Server-side rendered
   const data = await getCategoryPosts(slug, currentPage, 10);
 
-  if (!data || data.posts.length === 0) {
-    notFound();
-  }
-
   const categoryName = slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ');
 
   return (
@@ -153,9 +148,42 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
         </h1>
       </div>
 
-      {/* Blog Listing - 3 Column Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.posts.map((post) => {
+      {/* No Data Found Message */}
+      {(!data || data.posts.length === 0) ? (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="mb-6">
+            <svg
+              className="w-24 h-24 text-gray-500 mx-auto"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+          </div>
+          <h2 className={`text-2xl font-bold text-white mb-4 ${poppins.className}`}>
+            No Posts Found
+          </h2>
+          <p className={`text-white/70 text-lg max-w-md ${poppins.className}`}>
+            There are no blog posts available in the <span className="text-[#FEE39A] font-semibold">{categoryName}</span> category at the moment.
+          </p>
+          <Link
+            href="/blog"
+            className={`mt-8 inline-block px-6 py-3 bg-[#FEE39A] text-black rounded-lg font-medium hover:bg-[#FEE39A]/90 transition-colors ${poppins.className}`}
+          >
+            Browse All Blog Posts
+          </Link>
+        </div>
+      ) : (
+        <>
+          {/* Blog Listing - 3 Column Grid Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.posts.map((post) => {
           // Format date helper
           const formatDate = (dateString: string) => {
             const date = new Date(dateString);
@@ -230,17 +258,19 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                 </div>
               </article>
             </Link>
-          );
-        })}
-      </div>
+            );
+          })}
+          </div>
 
-      {/* Pagination */}
-      {data.totalPages > 1 && (
-        <Pagination
-          currentPage={data.currentPage}
-          totalPages={data.totalPages}
-          baseUrl={`/blog/category/${slug}`}
-        />
+          {/* Pagination */}
+          {data.totalPages > 1 && (
+            <Pagination
+              currentPage={data.currentPage}
+              totalPages={data.totalPages}
+              baseUrl={`/blog/category/${slug}`}
+            />
+          )}
+        </>
       )}
     </main>
   );
