@@ -632,6 +632,8 @@ export default function HeroSection() {
           </video>
         </div>
       </div>
+      {/* Gradient Overlay - Dark on bottom */}
+      <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-black via-black/50 to-transparent shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] pointer-events-none" style={{ zIndex: 2 }} />
       {/* Falling Stars above video */}
       <div
         ref={starsContainerRef}
@@ -642,7 +644,7 @@ export default function HeroSection() {
           left: 0,
           right: 0,
           bottom: 0,
-          zIndex: 2,
+          zIndex: 3,
         }}
       />
       <motion.div
@@ -688,7 +690,7 @@ export default function HeroSection() {
         
         {/* CTA Button */}
         <motion.button
-          className="mt-6 px-8 py-4 bg-amber-200 rounded-lg inline-flex justify-center items-center gap-2.5"
+          className="mt-6 px-8 py-4 bg-[#F0AF4E] rounded-lg inline-flex justify-center items-center gap-2.5"
           variants={buttonVariants}
           whileHover="hover"
         >

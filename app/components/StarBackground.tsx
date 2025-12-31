@@ -408,11 +408,11 @@ export default function StarBackground() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background: `
-              radial-gradient(ellipse at 20% 20%, rgba(20, 30, 60, 0.4) 0%, transparent 50%),
-              radial-gradient(ellipse at 80% 30%, rgba(30, 20, 50, 0.3) 0%, transparent 45%),
-              radial-gradient(ellipse at 60% 80%, rgba(15, 25, 45, 0.35) 0%, transparent 50%),
-              radial-gradient(ellipse at 10% 70%, rgba(25, 15, 40, 0.25) 0%, transparent 40%),
-              linear-gradient(180deg, rgba(5, 5, 15, 1) 0%, rgba(0, 0, 0, 1) 100%)
+              radial-gradient(ellipse at 20% 20%, rgba(0, 0, 0, 0.4) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 30%, rgba(0, 0, 0, 0.3) 0%, transparent 45%),
+              radial-gradient(ellipse at 60% 80%, rgba(0, 0, 0, 0.35) 0%, transparent 50%),
+              radial-gradient(ellipse at 10% 70%, rgba(0, 0, 0, 0.25) 0%, transparent 40%),
+              linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%)
             `
           }}
         />

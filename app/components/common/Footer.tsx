@@ -401,7 +401,7 @@ export default function Footer() {
           })}
         </div>
       </div>
-      <div className="hidden md:block">
+      <div>
         <ThreeD />
       </div>
     </footer>
