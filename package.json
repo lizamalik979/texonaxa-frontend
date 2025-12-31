@@ -17,6 +17,7 @@
     "@splinetool/react-spline": "^4.1.0",
     "@tsparticles/engine": "^3.9.1",
     "@tsparticles/react": "^3.0.0",
+    "aos": "^2.3.4",
     "cheerio": "^1.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/aos": "^3.0.7",
     "@types/cheerio": "^0.22.35",
     "@types/node": "^20",
     "@types/react": "^19",

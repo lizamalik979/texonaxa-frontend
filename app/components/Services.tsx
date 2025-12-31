@@ -68,10 +68,10 @@ const sections: ServiceSection[] = [
   },
 ];
 
-
 const Services = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
   const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -85,9 +85,9 @@ const Services = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Intersection Observer for scroll detection
+  // Intersection Observer for scroll detection - only when sticky
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile || !isSticky) return;
 
     const observers: IntersectionObserver[] = [];
 
@@ -116,7 +116,21 @@ const Services = () => {
     return () => {
       observers.forEach((observer) => observer.disconnect());
     };
-  }, [isMobile]);
+  }, [isMobile, isSticky]);
+
+  const handleServiceClick = (index: number) => {
+    setActiveSection(index);
+    setIsSticky(true);
+    // Scroll to activate sticky view
+    setTimeout(() => {
+      if (triggerRefs.current[index]) {
+        triggerRefs.current[index]?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 100);
+  };
 
   const handlePrev = () => {
     const newIndex = activeSection > 0 ? activeSection - 1 : sections.length - 1;
@@ -210,23 +224,25 @@ const Services = () => {
       initial="hidden"
       animate="visible"
     >
-      {/* Scroll trigger sections - positioned at start, stacked vertically */}
-      <div className="absolute top-0 left-0 right-0">
-        {sections.map((_, index) => (
-          <div
-            key={index}
-            ref={(el) => {
-              triggerRefs.current[index] = el;
-            }}
-            className="absolute left-0 right-0 h-[50vh]"
-            style={{ top: `${index * 50}vh` }}
-            aria-hidden="true"
-          />
-        ))}
-      </div>
+      {/* Scroll trigger sections - positioned at start, stacked vertically - only when sticky */}
+      {isSticky && (
+        <div className="absolute top-0 left-0 right-0">
+          {sections.map((_, index) => (
+            <div
+              key={index}
+              ref={(el) => {
+                triggerRefs.current[index] = el;
+              }}
+              className="absolute left-0 right-0 h-[50vh]"
+              style={{ top: `${index * 50}vh` }}
+              aria-hidden="true"
+            />
+          ))}
+        </div>
+      )}
 
-      {/* Sticky container that stays in view */}
-      <div className="sticky top-0 h-screen flex flex-col justify-center">
+      {/* Container - sticky only when a service is clicked */}
+      <div className={`${isSticky ? 'sticky' : 'relative'} top-0 h-screen flex flex-col justify-center`}>
         {/* Header */}
         <div className="pb-8 px-8 lg:px-16">
           <motion.div
@@ -318,15 +334,16 @@ const Services = () => {
                           </svg>
                         </button>
 
-                        {/* Service title */}
-                        <span
-                          className={`text-center transition-all duration-700 ease-out cursor-default ${isActive ? "text-white" : "text-white/80"
+                        {/* Service title - clickable */}
+                        <button
+                          onClick={() => handleServiceClick(index)}
+                          className={`text-center transition-all duration-700 ease-out ${isActive ? "text-white cursor-default" : "text-white/80 cursor-pointer hover:text-white"
                             }`}
                         >
                           <span className={`text-xl lg:text-2xl xl:text-3xl font-semibold whitespace-nowrap transition-all duration-700 ${poppins.className}`}>
                             {section.title}
                           </span>
-                        </span>
+                        </button>
 
                         {/* Right arrow - only visible for active */}
                         <button
@@ -400,8 +417,8 @@ const Services = () => {
         </div>
       </div>
 
-      {/* Spacer to match trigger height - 11 sections * 50vh each = 550vh */}
-      <div className="h-[550vh]" />
+      {/* Spacer to match trigger height - only when sticky */}
+      {isSticky && <div className="h-[550vh]" />}
     </motion.section>
   );
 };
