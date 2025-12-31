@@ -4,6 +4,7 @@ import StarBackground from "./components/StarBackground";
 import Footer from "./components/common/Footer";
 import Header from "./components/common/Header";
 import LeadModalProvider from "./components/leads/LeadModalProvider";
+import HeaderMenuProvider from "./contexts/HeaderMenuContext";
 
 export const metadata: Metadata = {
   title: "Shooting Stars",
@@ -23,11 +24,13 @@ export default function RootLayout({
         
         {/* Content above the background */}
         <div className="relative z-10">
-          <LeadModalProvider>
-            <Header />
-            {children}
-            <Footer />
-          </LeadModalProvider>
+          <HeaderMenuProvider>
+            <LeadModalProvider>
+              <Header />
+              {children}
+              <Footer />
+            </LeadModalProvider>
+          </HeaderMenuProvider>
         </div>
       </body>
     </html>
