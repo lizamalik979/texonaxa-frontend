@@ -14,10 +14,10 @@ export default function AboutUs() {
       onMouseEnter={() => setActiveSection("about")}
       onMouseLeave={() => setActiveSection("default")}
     >
-      <div className="mx-auto max-w-[1920px] flex flex-col lg:flex-row gap-10 lg:gap-20 items-center">
+      <div className="mx-auto max-w-[1920px] flex flex-col lg:flex-row gap-10 lg:gap-20 lg:items-center">
         {/* Image placeholder */}
-        <div className="w-full max-w-[451px] h-[451px] aspect-square rounded-3xl overflow-hidden flex-shrink-0">
-          <div className="w-full h-full rounded-3xl bg-gradient-to-br from-yellow-400/70 via-pink-500/60 to-indigo-600/70" />
+        <div className="w-full max-w-[451px] mx-auto lg:mx-0 rounded-3xl overflow-hidden flex-shrink-0" style={{ aspectRatio: '1 / 1', width: '100%' }}>
+          <div className="w-full h-full rounded-3xl bg-gradient-to-br from-yellow-400/70 via-pink-500/60 to-indigo-600/70" style={{ width: '100%', height: '100%' }} />
         </div>
 
         {/* Text content */}
