@@ -167,7 +167,7 @@ const Services = () => {
         initial="hidden"
         animate="visible"
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[1920px] mx-auto">
           <motion.h2
             className={`text-3xl md:text-4xl font-medium text-white mb-4 ${poppins.className}`}
             variants={fadeInUp}
@@ -244,9 +244,9 @@ const Services = () => {
       {/* Container - sticky only when a service is clicked */}
       <div className={`${isSticky ? 'sticky' : 'relative'} top-0 h-screen flex flex-col justify-center`}>
         {/* Header */}
-        <div className="pb-8 px-8 lg:px-16">
+        <div className="pb-8 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
           <motion.div
-            className="max-w-7xl mx-auto"
+            className="max-w-[1920px] mx-auto"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.4 }}
@@ -259,7 +259,7 @@ const Services = () => {
               Integrated Digital Solutions: Design, Code, & Growth
             </motion.h2>
             <motion.p
-              className={`text-white/70 text-xl lg:text-2xl max-w-7xl ${poppins.className}`}
+              className={`text-white/70 text-xl lg:text-2xl ${poppins.className}`}
               variants={fadeInUp}
               custom={0.1}
             >
@@ -269,8 +269,8 @@ const Services = () => {
         </div>
 
         {/* Main content area */}
-        <div className="flex items-center px-8 lg:px-16">
-          <div className="max-w-7xl mx-auto w-full">
+        <div className="flex items-center px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
+          <div className="max-w-[1920px] mx-auto w-full">
             <div className="grid grid-cols-2 gap-8 lg:gap-16 w-full">
               {/* Left side - Navigation Carousel */}
               <motion.div
