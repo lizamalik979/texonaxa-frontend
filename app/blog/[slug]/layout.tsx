@@ -157,7 +157,7 @@ const layout = async ({
                 },
                 "mainEntityOfPage": {
                   "@type": "WebPage",
-                  "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://yoursite.com'}/blog/${post.slug || slug}`,
+                  "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://texonaxa-cms.vercel.app'}/blog/${post.slug || slug}`,
                 },
               }),
             }}

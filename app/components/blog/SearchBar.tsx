@@ -63,7 +63,8 @@ export default function SearchBar({ onSearchResults, onSearchError, onCategoryCl
         const fetchCategories = async () => {
             setIsLoadingCategories(true);
             try {
-                const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001";
+                const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://texonaxa-cms.vercel.app";
+                // const apiUrl = "https://texonaxa-cms.vercel.app";
                 const response = await fetch(`${apiUrl}/api/post/client/filter`, {
                     method: 'GET',
                     headers: {
@@ -104,7 +105,7 @@ export default function SearchBar({ onSearchResults, onSearchError, onCategoryCl
 
         setIsLoading(true);
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || "http://localhost:3001";
+            const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://texonaxa-cms.vercel.app";
             const response = await fetch(`${apiUrl}/api/post/client/search?q=${encodeURIComponent(searchQuery)}`, {
                 method: 'GET',
                 headers: {

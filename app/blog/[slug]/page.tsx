@@ -54,7 +54,7 @@ interface BlogDetailApiResponse {
 // Fetch blog post by slug with ISR
 async function getBlogPost(slug: string): Promise<BlogPostDetail | null> {
   try {
-    const apiUrl = process.env.BACKEND_API_URL || "http://localhost:3000";
+    const apiUrl = process.env.BACKEND_API_URL || "https://texonaxa-cms.vercel.app";
 
     // ISR: next.revalidate = 300 seconds (5 minutes)
     const response = await fetch(
