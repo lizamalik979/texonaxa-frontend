@@ -15,9 +15,27 @@ export default function Footer() {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    // Expand first section by default on desktop when menu data is loaded
+    // Expand all sections and first child of each menu by default when menu data is loaded
     if (menuData.length > 0 && expandedSections.size === 0) {
-      setExpandedSections(new Set([`section-0`]));
+      const sectionsToExpand = new Set<string>();
+      const itemsToExpand = new Set<string>();
+      
+      menuData.forEach((menuItem, index) => {
+        // Expand all sections (both desktop and mobile)
+        sectionsToExpand.add(`section-${index}`);
+        sectionsToExpand.add(`mobile-section-${index}`);
+        
+        // Expand first child of each section (only first-level, not nested)
+        if (menuItem.child_menu && Array.isArray(menuItem.child_menu) && menuItem.child_menu.length > 0) {
+          // Desktop first child
+          itemsToExpand.add(`section-${index}-item-0`);
+          // Mobile first child
+          itemsToExpand.add(`mobile-section-${index}-item-0`);
+        }
+      });
+      
+      setExpandedSections(sectionsToExpand);
+      setExpandedItems(itemsToExpand);
     }
   }, [menuData]);
 
