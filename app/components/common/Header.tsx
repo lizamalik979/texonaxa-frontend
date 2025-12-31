@@ -25,7 +25,6 @@ export default function Header() {
     setMounted(true);
 
     const handleScroll = () => {
-      // Check multiple sources for scroll position to be robust against global CSS layout quirks
       const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
       setShow3D(currentScrollY > 10);
     };
@@ -113,9 +112,9 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full backdrop-blur-md bg-transparent">
-      <div className="mx-auto px-4 sm:px-6 lg:px-16 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 relative h-12 w-32">
-          {/* Static Logo - Always visible on mobile, fades out on scroll for desktop */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-6">
+        <Link href="/" className="flex items-center gap-3 relative h-12 w-32 flex-shrink-0">
+          {/* Static Logo - Fades out on scroll */}
           <div
             className={`absolute inset-0 flex items-center justify-start transition-opacity duration-500 z-10 opacity-100 ${show3D ? 'md:opacity-0 md:pointer-events-none' : 'md:opacity-100'}`}
           >
@@ -130,8 +129,8 @@ export default function Header() {
           </div>
         </Link>
 
-        {/* Desktop Navigation - Center */}
-        <nav className="hidden lg:flex items-center gap-6 text-white flex-1 justify-center">
+        {/* Desktop Navigation - All links on the left */}
+        <nav className="hidden lg:flex items-center gap-6 text-white">
           {menuData.map((menuItem, index) => {
             const menuId = `menu-${index}`;
             const hasChild = hasChildren(menuItem);
@@ -296,10 +295,8 @@ export default function Header() {
               </div>
             );
           })}
-        </nav>
-
-        {/* Desktop Navigation - Right Side (About us, Contact us) */}
-        <nav className="hidden lg:flex items-center gap-6 text-white">
+          
+          {/* About us and Contact us - Now part of the left navigation */}
           <Link
             href="/about"
             className={`text-sm sm:text-base font-medium hover:text-amber-200 transition-colors ${poppins.className}`}
@@ -316,7 +313,7 @@ export default function Header() {
 
         {/* Mobile Menu Button - Shows when screen < 1024px (lg breakpoint) */}
         <button
-          className="lg:hidden text-white p-2"
+          className="lg:hidden text-white p-2 ml-auto"
           onClick={() => setIsMenuOpen(true)}
           aria-label="Open menu"
         >
