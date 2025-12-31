@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { orbitron, poppins } from "../fonts";
 import * as PIXI from "pixi.js";
+import ContactLeadForm from "./contact/ContactLeadForm";
+import { X } from "lucide-react";
 
 interface MeteorColor {
   head: { r: number; g: number; b: number };
@@ -75,6 +77,7 @@ export default function HeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isInteractionReady, setIsInteractionReady] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -693,12 +696,54 @@ export default function HeroSection() {
           className="mt-6 px-8 py-4 bg-[#F0AF4E] rounded-lg inline-flex justify-center items-center gap-2.5"
           variants={buttonVariants}
           whileHover="hover"
+          onClick={() => setShowContactForm(true)}
         >
           <span className={`text-center text-black text-lg md:text-xl lg:text-2xl font-medium ${poppins.className}`}>
             Start Project
           </span>
         </motion.button>
       </motion.div>
+
+      {/* Contact Form Modal */}
+      <AnimatePresence>
+        {showContactForm && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[9998] bg-black/80 backdrop-blur-sm"
+              onClick={() => setShowContactForm(false)}
+            />
+
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-black/95 rounded-3xl p-4 sm:p-6 border border-white/10">
+                {/* Close Button */}
+                <button
+                  onClick={() => setShowContactForm(false)}
+                  className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/80 hover:text-white transition-colors p-2"
+                  aria-label="Close form"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+
+                {/* Form */}
+                <ContactLeadForm />
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

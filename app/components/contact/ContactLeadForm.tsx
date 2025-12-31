@@ -101,69 +101,69 @@ export default function ContactLeadForm() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <h1 className={`text-4xl sm:text-5xl font-semibold text-white text-center ${poppins.className}`}>
-      Let’s Build Something Great
+    <div className="w-full mx-auto px-0">
+      <h1 className={`text-xl sm:text-2xl font-semibold text-white text-center ${poppins.className}`}>
+      Let's Build Something Great
       </h1>
-      <div className="mt-6 h-px w-full bg-white/15" />
+      <div className="mt-2 h-px w-full bg-white/15" />
 
-      <div className="mt-8 space-y-6">
+      <div className="mt-3 space-y-2.5">
         <div>
-          <label className={`block text-sm font-medium text-white/80 mb-2 ${poppins.className}`}>
+          <label className={`block text-xs font-medium text-white/80 mb-1 ${poppins.className}`}>
             Name
           </label>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
-            className="w-full h-14 rounded-2xl bg-white/5 text-white placeholder:text-white/40 px-6 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
+            className="w-full h-9 rounded-lg bg-white/5 text-white placeholder:text-white/40 px-3 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
           />
         </div>
 
         <div>
-          <label className={`block text-sm font-medium text-white/80 mb-2 ${poppins.className}`}>
+          <label className={`block text-xs font-medium text-white/80 mb-1 ${poppins.className}`}>
             Email
           </label>
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-            className="w-full h-14 rounded-2xl bg-white/5 text-white placeholder:text-white/40 px-6 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
+            className="w-full h-9 rounded-lg bg-white/5 text-white placeholder:text-white/40 px-3 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
           />
         </div>
 
         <div>
-          <label className={`block text-sm font-medium text-white/80 mb-2 ${poppins.className}`}>
+          <label className={`block text-xs font-medium text-white/80 mb-1 ${poppins.className}`}>
             Phone Number
           </label>
           <input
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="Phone Number"
-            className="w-full h-14 rounded-2xl bg-white/5 text-white placeholder:text-white/40 px-6 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
+            className="w-full h-9 rounded-lg bg-white/5 text-white placeholder:text-white/40 px-3 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
           />
         </div>
 
         <div>
-          <label className={`block text-sm font-medium text-white/80 mb-2 ${poppins.className}`}>
+          <label className={`block text-xs font-medium text-white/80 mb-1 ${poppins.className}`}>
             Company
           </label>
           <input
             value={company}
             onChange={(e) => setCompany(e.target.value)}
             placeholder="Company"
-            className="w-full h-14 rounded-2xl bg-white/5 text-white placeholder:text-white/40 px-6 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
+            className="w-full h-9 rounded-lg bg-white/5 text-white placeholder:text-white/40 px-3 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
           />
         </div>
 
         <div>
-          <label className={`block text-sm font-medium text-white/80 mb-2 ${poppins.className}`}>
+          <label className={`block text-xs font-medium text-white/80 mb-1 ${poppins.className}`}>
             Service Selected
           </label>
           <select
             value={serviceSelected}
             onChange={(e) => setServiceSelected(e.target.value)}
-            className="w-full h-14 rounded-2xl bg-white/5 text-white px-6 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
+            className="w-full h-9 rounded-lg bg-white/5 text-white px-3 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
           >
             <option value="" disabled className="bg-black text-white">
               Select a service
@@ -177,37 +177,37 @@ export default function ContactLeadForm() {
         </div>
 
         <div>
-          <label className={`block text-sm font-medium text-white/80 mb-2 ${poppins.className}`}>
+          <label className={`block text-xs font-medium text-white/80 mb-1 ${poppins.className}`}>
             Message
           </label>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Message"
-            className="w-full min-h-[260px] rounded-2xl bg-white/5 text-white placeholder:text-white/40 px-6 py-4 outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25"
+            className="w-full min-h-[70px] rounded-lg bg-white/5 text-white placeholder:text-white/40 px-3 py-2 text-sm outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-white/25 resize-none"
           />
         </div>
 
-        <label className="flex items-center gap-3">
+        <label className="flex items-center gap-1.5">
           <input
             type="checkbox"
             checked={agree}
             onChange={(e) => setAgree(e.target.checked)}
-            className="h-4 w-4 rounded border-white/30 bg-white/5"
+            className="h-3 w-3 rounded border-white/30 bg-white/5"
           />
-          <span className={`text-white/80 ${poppins.className}`}>
+          <span className={`text-white/80 text-xs ${poppins.className}`}>
             I agree with the terms and conditions.
           </span>
         </label>
 
-        {error && <p className={`text-sm text-red-400 ${poppins.className}`}>{error}</p>}
-        {success && <p className={`text-sm text-green-300 ${poppins.className}`}>{success}</p>}
+        {error && <p className={`text-xs text-red-400 ${poppins.className}`}>{error}</p>}
+        {success && <p className={`text-xs text-green-300 ${poppins.className}`}>{success}</p>}
 
         <button
           type="button"
           onClick={onSubmit}
           disabled={isSubmitting}
-          className={`w-full h-16 rounded-full bg-white text-black text-lg font-semibold disabled:opacity-60 ${poppins.className}`}
+          className={`w-full h-10 rounded-full bg-[#F0AF4E] text-black text-sm font-semibold disabled:opacity-60 hover:bg-[#F0AF4E]/90 transition-colors ${poppins.className}`}
         >
           {isSubmitting ? "Sending..." : "Send"}
         </button>

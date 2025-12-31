@@ -100,7 +100,7 @@ export default function Footer() {
                 info@texonaxa.com
                 </p>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 items-center sm:items-start">
                 <h4 className={`text-center sm:text-left text-neutral-400 text-xl font-medium leading-tight ${poppins.className}`}>
                   Follow us
                 </h4>

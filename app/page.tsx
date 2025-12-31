@@ -43,7 +43,9 @@ export default function Home() {
     <main>
       <HeroSection />
       <AboutUs />
-      <Services />
+      <div className="hidden md:block">
+        <Services />
+      </div>
       <OurServices />
       <DigitalGrowth />
       <OurStory />

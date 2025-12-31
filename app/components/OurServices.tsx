@@ -4,7 +4,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { poppins } from "../fonts";
-import Link from "next/link";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import ContactLeadForm from "./contact/ContactLeadForm";
+import { X } from "lucide-react";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -14,30 +17,60 @@ export default function OurServices() {
   const cardsRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isInView, setIsInView] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
 
   const cards = [
     {
       id: 1,
       title: "Web Development",
-      placeholderColor: "bg-gradient-to-br from-purple-900/40 to-blue-900/40",
+      image: "/images/service/a.svg",
       href: "/services/web-development",
     },
     {
       id: 2,
-      title: "Web Development",
-      placeholderColor: "bg-gradient-to-br from-gray-700/40 to-gray-800/40",
+      title: "UI/UX Design",
+      image: "/images/service/b.svg",
       href: "/services/mobile-apps",
     },
     {
       id: 3,
-      title: "Web Development",
-      placeholderColor: "bg-gradient-to-br from-gray-700/40 to-gray-800/40",
+      title: "Digital Marketing",
+      image: "/images/service/c.svg",
       href: "/services/digital-strategy",
     },
   ];
 
   useEffect(() => {
     setIsMounted(true);
+  }, []);
+
+  // Intersection Observer to detect when section enters viewport
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsInView(true);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '100px',
+      }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -51,6 +84,8 @@ export default function OurServices() {
 
     // Wait for next frame to ensure DOM is ready
     const setupScrollTrigger = () => {
+      setIsLoading(true);
+      
       const cards = cardsRef.current?.children;
       if (!cards || cards.length === 0) {
         // Retry if cards aren't ready
@@ -100,11 +135,22 @@ export default function OurServices() {
             scrub: 4,
             invalidateOnRefresh: true,
             refreshPriority: 1,
+            onUpdate: () => {
+              // Hide loader once animation starts
+              if (animationInstance && animationInstance.progress() > 0) {
+                setIsLoading(false);
+              }
+            },
           }
         }
       );
       
       scrollTriggerInstance = animationInstance.scrollTrigger || null;
+      
+      // Hide loader after a short delay to ensure everything is set up
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
       
       // THE TRICK: Watch for when section enters view and reset if needed
       const checkAndReset = () => {
@@ -250,7 +296,17 @@ export default function OurServices() {
 
       {/* Desktop: Horizontal scroll container */}
       <div className="hidden md:block h-[120vh]" ref={containerRef}>
-        <div className="sticky top-0 py-12 md:py-20 flex items-center overflow-hidden">
+        {/* Loader */}
+        {isLoading && isInView && (
+          <div className="sticky top-0 h-screen flex items-center justify-center z-50">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
+              <p className={`text-white text-lg ${poppins.className}`}>Loading services...</p>
+            </div>
+          </div>
+        )}
+        
+        <div className={`sticky top-0 py-12 md:py-20 flex items-center overflow-hidden ${isLoading && isInView ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
           <div
             ref={cardsRef}
             className="flex gap-12 px-8"
@@ -270,13 +326,21 @@ export default function OurServices() {
                 onMouseEnter={() => setHoveredCard(card.id)}
                 onMouseLeave={() => setHoveredCard(null)}
             >
-                {/* Placeholder color background */}
-                <div className={`absolute inset-0 ${card.placeholderColor}`}></div>
+                {/* Service Image */}
+                <div className="absolute inset-0">
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    fill
+                    className="object-cover"
+                    sizes="500px"
+                  />
+                </div>
                 
                 {/* Purple glow effect for active card */}
-                {hoveredCard === card.id && (
+                {/* {hoveredCard === card.id && (
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 via-blue-500/20 to-purple-600/30 rounded-2xl"></div>
-                )}
+                )} */}
                 
                 {/* Glow shadow for active card */}
                 {hoveredCard === card.id && (
@@ -297,13 +361,14 @@ export default function OurServices() {
                     </h3>
 
                     {/* More Details Button */}
-                    <Link href={card.href}>
-                      <button className={`w-fit py-3 px-6 bg-amber-200 rounded-lg hover:scale-105 transition-all duration-300 ${poppins.className}`}>
-                        <span className="text-black text-base font-medium">
-                          More details
-                        </span>
-                      </button>
-                    </Link>
+                    <button 
+                      onClick={() => setShowContactForm(true)}
+                      className={`w-fit py-3 px-6 bg-[#F0AF4E] rounded-lg hover:scale-105 transition-all duration-300 ${poppins.className}`}
+                    >
+                      <span className="text-black text-base font-medium">
+                        More details
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -318,7 +383,7 @@ export default function OurServices() {
           {cards.map((card) => (
             <div
               key={card.id}
-              className={`group relative w-full h-[400px] rounded-2xl overflow-hidden transform transition-all duration-300 ease-out ${
+              className={`group relative w-full aspect-square max-w-md mx-auto rounded-2xl overflow-hidden transform transition-all duration-300 ease-out ${
                 hoveredCard === card.id 
                   ? 'scale-[1.02]' 
                   : 'opacity-70'
@@ -326,8 +391,16 @@ export default function OurServices() {
               onMouseEnter={() => setHoveredCard(card.id)}
               onMouseLeave={() => setHoveredCard(null)}
             >
-              {/* Placeholder color background */}
-              <div className={`absolute inset-0 ${card.placeholderColor}`}></div>
+              {/* Service Image */}
+              <div className="absolute inset-0">
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                />
+              </div>
               
               {/* Purple glow effect for active card */}
               {hoveredCard === card.id && (
@@ -353,19 +426,61 @@ export default function OurServices() {
                 </h3>
 
                 {/* More Details Button */}
-                  <Link href={card.href}>
-                <button className={`w-fit py-3 px-6 bg-amber-200 rounded-lg hover:scale-105 transition-all duration-300 ${poppins.className}`}>
+                <button 
+                  onClick={() => setShowContactForm(true)}
+                  className={`w-fit py-3 px-6 bg-[#F0AF4E] rounded-lg hover:scale-105 transition-all duration-300 ${poppins.className}`}
+                >
                   <span className="text-black text-base font-medium">
                     More details
                   </span>
                 </button>
-                  </Link>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Contact Form Modal */}
+      <AnimatePresence>
+        {showContactForm && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[9998] bg-black/80 backdrop-blur-sm"
+              onClick={() => setShowContactForm(false)}
+            />
+
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-black/95 rounded-3xl p-4 sm:p-6 border border-white/10">
+                {/* Close Button */}
+                <button
+                  onClick={() => setShowContactForm(false)}
+                  className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/80 hover:text-white transition-colors p-2"
+                  aria-label="Close form"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+
+                {/* Form */}
+                <ContactLeadForm />
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

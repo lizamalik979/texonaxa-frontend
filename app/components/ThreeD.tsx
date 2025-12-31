@@ -41,7 +41,7 @@ export default function ThreeD() {
     maxRings: 3,
     initialPosition: { lat: 22.3193, lng: 114.1694 },
     autoRotate: true,
-    autoRotateSpeed: 0.3,
+    autoRotateSpeed: 0.5,
   };
   const colors = ["#06b6d4", "#3b82f6", "#6366f1"];
   const sampleArcs = [
