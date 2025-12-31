@@ -19,7 +19,7 @@ async function getServiceData(slug: string): Promise<ServiceApiResponse | null> 
     const response = await fetch(`${apiUrl}/api/services/client/${slug}`, {
       cache: "no-store",
     });
-
+   console.log("service responsw", response)
     if (!response.ok) {
       if (response.status === 404) {
         console.error(`Service with slug "${slug}" not found (404)`);
@@ -30,15 +30,8 @@ async function getServiceData(slug: string): Promise<ServiceApiResponse | null> 
     }
 
     const jsonData = await response.json();
-    
-    // API returns { message: string, data: {...} }
-    // Extract the data object from the response
-    if (jsonData && typeof jsonData === 'object' && 'data' in jsonData) {
-      return jsonData.data as ServiceApiResponse;
-    }
-    
-    // Fallback: If API returns data directly (shouldn't happen based on your API structure)
-    return jsonData as ServiceApiResponse;
+    const serviceData=jsonData.servicePages;
+    return serviceData as ServiceApiResponse;
   } catch (error) {
     console.error("Error fetching service data:", error);
     return null;
@@ -52,6 +45,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const data = await getServiceData(slug);
+  console.log("data returned from API",data);
 
   if (!data) {
     return {
@@ -73,7 +67,7 @@ export default async function ServicePage({
 }) {
   const { slug } = await params;
   const data = await getServiceData(slug);
-
+  
   if (!data) {
     notFound();
   }
