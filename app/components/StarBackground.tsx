@@ -114,12 +114,11 @@ export default function StarBackground() {
     let time = 0;
 
     const animate = () => {
-      time += 1;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       stars.forEach((star) => {
-        const twinkle = Math.sin(time * star.twinkleSpeed + star.twinkleOffset) * 0.3 + 0.7;
-        const alpha = star.brightness * twinkle;
+        // Use brightness directly without twinkling
+        const alpha = star.brightness;
 
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);

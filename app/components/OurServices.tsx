@@ -43,6 +43,12 @@ export default function OurServices() {
   useEffect(() => {
     if (!containerRef.current || !cardsRef.current || !isMounted) return;
 
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return;
+
+    let scrollTriggerInstance: ScrollTrigger | null = null;
+    let animationInstance: gsap.core.Tween | null = null;
+
     // Wait for next frame to ensure DOM is ready
     const setupScrollTrigger = () => {
       const cards = cardsRef.current?.children;
@@ -52,28 +58,36 @@ export default function OurServices() {
         return;
       }
 
-      const isMobile = window.innerWidth < 768;
-      
-      // Only setup horizontal scroll on desktop
-      if (isMobile) {
-        return;
-      }
-
       const cardWidth = 500;
       const gap = 48; // gap-12 = 48px
       const totalWidth = (cardWidth * cards.length) + (gap * (cards.length - 1));
       const centerOffset = (window.innerWidth - cardWidth) / 2;
       const edgeOffset = window.innerWidth - cardWidth;
-
+      
       // Kill any existing ScrollTriggers for this element
+      if (scrollTriggerInstance) {
+        scrollTriggerInstance.kill();
+        scrollTriggerInstance = null;
+      }
+      if (animationInstance) {
+        animationInstance.kill();
+        animationInstance = null;
+      }
+      
       ScrollTrigger.getAll().forEach(trigger => {
         if (trigger.vars.trigger === containerRef.current) {
           trigger.kill();
         }
       });
 
-      // Create horizontal scroll animation (desktop only)
-      gsap.fromTo(
+      if (!containerRef.current) return;
+      
+      const containerHeight = containerRef.current.offsetHeight || window.innerHeight * 1.2;
+      
+      // Reset cards to start position
+      gsap.set(cardsRef.current, { x: edgeOffset });
+      
+      animationInstance = gsap.fromTo(
         cardsRef.current,
         { x: edgeOffset },
         {
@@ -82,15 +96,70 @@ export default function OurServices() {
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top bottom",
-            end: "60% top",
-            scrub: 2,
+            end: () => `+=${containerHeight}`,
+            scrub: 4,
             invalidateOnRefresh: true,
+            refreshPriority: 1,
           }
         }
       );
-
-      // Refresh ScrollTrigger after setup
-      ScrollTrigger.refresh();
+      
+      scrollTriggerInstance = animationInstance.scrollTrigger || null;
+      
+      // THE TRICK: Watch for when section enters view and reset if needed
+      const checkAndReset = () => {
+        if (!scrollTriggerInstance || !containerRef.current) return;
+        
+        const rect = containerRef.current.getBoundingClientRect();
+        const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+        const isAtTop = rect.top >= 0 && rect.top < window.innerHeight * 0.3;
+        
+        // If section is in view near top and trigger thinks we're at end, reset!
+        if (isInView && isAtTop && scrollTriggerInstance.progress >= 0.95) {
+          const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+          
+          // Kill and recreate
+          if (scrollTriggerInstance) scrollTriggerInstance.kill();
+          if (animationInstance) animationInstance.kill();
+          
+          gsap.set(cardsRef.current, { x: edgeOffset });
+          
+          animationInstance = gsap.fromTo(
+            cardsRef.current,
+            { x: edgeOffset },
+            {
+              x: -(totalWidth - cardWidth - centerOffset),
+              ease: "none",
+              scrollTrigger: {
+                trigger: containerRef.current,
+                start: `${currentScroll} top`,
+                end: `${currentScroll + containerHeight} top`,
+                scrub: 4,
+                invalidateOnRefresh: true,
+                refreshPriority: 1,
+              }
+            }
+          );
+          
+          scrollTriggerInstance = animationInstance.scrollTrigger || null;
+        }
+      };
+      
+      // Check on scroll
+      const handleScroll = () => {
+        requestAnimationFrame(checkAndReset);
+      };
+      
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      
+      // Also check periodically
+      const checkInterval = setInterval(checkAndReset, 500);
+      
+      // Store cleanup
+      (setupScrollTrigger as any).cleanup = () => {
+        window.removeEventListener('scroll', handleScroll);
+        clearInterval(checkInterval);
+      };
     };
 
     // Use requestAnimationFrame to ensure DOM is ready
@@ -100,7 +169,6 @@ export default function OurServices() {
 
     // Handle window resize
     const handleResize = () => {
-      ScrollTrigger.refresh();
       // Re-setup if switching between mobile/desktop
       if (window.innerWidth >= 768) {
         setTimeout(setupScrollTrigger, 100);
@@ -113,11 +181,56 @@ export default function OurServices() {
         });
       }
     };
+    
+    // Refresh ScrollTrigger when layout might change (e.g., Services becomes sticky)
+    const handleLayoutChange = () => {
+      if (containerRef.current && window.innerWidth >= 768) {
+        // Use requestAnimationFrame to ensure DOM has updated
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+        });
+      }
+    };
+    
     window.addEventListener('resize', handleResize);
+    
+    // Use ResizeObserver to detect when other sections change layout
+    const resizeObserver = new ResizeObserver(() => {
+      handleLayoutChange();
+    });
+    if (containerRef.current) {
+      resizeObserver.observe(document.body);
+    }
+    
+    // Also listen for scroll events to detect when page height changes
+    // This helps catch when Services adds the spacer
+    let lastPageHeight = document.documentElement.scrollHeight;
+    const checkPageHeight = () => {
+      const currentHeight = document.documentElement.scrollHeight;
+      if (Math.abs(currentHeight - lastPageHeight) > 100) {
+        lastPageHeight = currentHeight;
+        handleLayoutChange();
+      }
+    };
+    
+    // Check periodically for page height changes
+    const heightCheckInterval = setInterval(checkPageHeight, 500);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      resizeObserver.disconnect();
+      clearInterval(heightCheckInterval);
+      
+      // Cleanup scroll listener and interval from setupScrollTrigger
+      if ((setupScrollTrigger as any).cleanup) {
+        (setupScrollTrigger as any).cleanup();
+      }
+      
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.vars.trigger === containerRef.current) {
+          trigger.kill();
+        }
+      });
     };
   }, [isMounted, cards.length]);
 
