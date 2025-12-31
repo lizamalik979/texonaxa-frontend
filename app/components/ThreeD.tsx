@@ -132,7 +132,7 @@ export default function ThreeD() {
             <h2
               className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold bg-gradient-to-b from-white to-black bg-clip-text text-transparent z-10 ${poppins.className}`}
             >
-              TAXA
+              TEXO
             </h2>
           </div>
 
@@ -177,7 +177,7 @@ export default function ThreeD() {
             <h2
               className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold bg-gradient-to-b from-white to-black bg-clip-text text-transparent z-10 ${poppins.className}`}
             >
-              NOVA
+              NEXA
             </h2>
           </div>
 
