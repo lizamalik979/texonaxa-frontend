@@ -5,11 +5,11 @@ import OpenLeadModalButton from "./leads/OpenLeadModalButton";
 
 export default function WorkTogether() {
   return (
-    <section className="w-full py-20 px-4 sm:px-6 md:px-8">
+    <section className="w-full py-20 px-0 sm:px-4 md:px-6">
       <div className="max-w-7xl mx-auto flex justify-center">
         <div className="flex flex-col items-center gap-3">
           {/* Heading */}
-          <h2 className={`text-center text-4xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-medium bg-gradient-to-b from-white via-gray-500 to-black bg-clip-text text-transparent leading-tight overflow-visible ${poppins.className}`}>
+          <h2 className={`text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-medium bg-gradient-to-b from-white via-gray-500 to-black bg-clip-text text-transparent leading-tight overflow-visible ${poppins.className}`}>
             Let's Work Together
           </h2>
 
