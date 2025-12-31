@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { poppins } from "../fonts";
+import { useSection } from "../contexts/SectionContext";
 
 const stats = [
   {
@@ -30,6 +31,7 @@ export default function OurStory() {
   const [counts, setCounts] = useState([0, 0, 0, 0]);
   const [hasAnimated, setHasAnimated] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { setActiveSection } = useSection();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -91,7 +93,12 @@ export default function OurStory() {
   }, [hasAnimated]);
 
   return (
-    <section ref={sectionRef} className="w-full py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8">
+    <section 
+      ref={sectionRef} 
+      className="w-full py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8"
+      onMouseEnter={() => setActiveSection("ourStory")}
+      onMouseLeave={() => setActiveSection("default")}
+    >
       <div className="max-w-7xl mx-auto">
         {/* Title */}
         <div className="flex justify-center mb-8 sm:mb-12 md:mb-16">

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { orbitron, poppins } from "../fonts";
+import { useSection } from "../contexts/SectionContext";
 
 interface ServiceSection {
   title: string;
@@ -73,6 +74,7 @@ const Services = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { setActiveSection: setSectionContext } = useSection();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -166,6 +168,8 @@ const Services = () => {
         className="min-h-screen py-16 px-6"
         initial="hidden"
         animate="visible"
+        onMouseEnter={() => setSectionContext("services")}
+        onMouseLeave={() => setSectionContext("default")}
       >
         <div className="max-w-[1920px] mx-auto">
           <motion.h2
@@ -223,6 +227,8 @@ const Services = () => {
       className="relative"
       initial="hidden"
       animate="visible"
+      onMouseEnter={() => setSectionContext("services")}
+      onMouseLeave={() => setSectionContext("default")}
     >
       {/* Scroll trigger sections - positioned at start, stacked vertically - only when sticky */}
       {isSticky && (

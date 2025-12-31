@@ -8,6 +8,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ContactLeadForm from "./contact/ContactLeadForm";
 import { X } from "lucide-react";
+import { useSection } from "../contexts/SectionContext";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -20,6 +21,7 @@ export default function OurServices() {
   const [isLoading, setIsLoading] = useState(true);
   const [isInView, setIsInView] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
+  const { setActiveSection } = useSection();
 
   const cards = [
     {
@@ -281,7 +283,11 @@ export default function OurServices() {
   }, [isMounted, cards.length]);
 
   return (
-    <div className="relative min-h-screen">
+    <div 
+      className="relative min-h-screen"
+      onMouseEnter={() => setActiveSection("ourServices")}
+      onMouseLeave={() => setActiveSection("default")}
+    >
       {/* Header Section */}
       <div className="px-4 md:px-8 pt-12 md:pt-16 lg:pt-20 mb-16">
         <div className="max-w-7xl mx-auto text-center">

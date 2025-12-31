@@ -5,13 +5,19 @@ import { poppins } from "../fonts";
 import { motion, AnimatePresence } from "framer-motion";
 import ContactLeadForm from "./contact/ContactLeadForm";
 import { X } from "lucide-react";
+import { useSection } from "../contexts/SectionContext";
 
 export default function WorkTogether() {
   const [showContactForm, setShowContactForm] = useState(false);
+  const { setActiveSection } = useSection();
 
   return (
     <>
-      <section className="w-full py-20 px-0 sm:px-4 md:px-6">
+      <section 
+        className="w-full py-20 px-0 sm:px-4 md:px-6"
+        onMouseEnter={() => setActiveSection("workTogether")}
+        onMouseLeave={() => setActiveSection("default")}
+      >
         <div className="max-w-7xl mx-auto flex justify-center">
           <div className="flex flex-col items-center gap-3">
             {/* Heading */}

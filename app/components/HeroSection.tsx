@@ -7,6 +7,7 @@ import { orbitron, poppins } from "../fonts";
 import * as PIXI from "pixi.js";
 import ContactLeadForm from "./contact/ContactLeadForm";
 import { X } from "lucide-react";
+import { useSection } from "../contexts/SectionContext";
 
 interface MeteorColor {
   head: { r: number; g: number; b: number };
@@ -78,6 +79,7 @@ export default function HeroSection() {
   const [isHovering, setIsHovering] = useState(false);
   const [isInteractionReady, setIsInteractionReady] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
+  const { setActiveSection } = useSection();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -593,6 +595,8 @@ export default function HeroSection() {
       style={{
         pointerEvents: isInteractionReady ? 'auto' : 'none',
       }}
+      onMouseEnter={() => setActiveSection("hero")}
+      onMouseLeave={() => setActiveSection("default")}
     >
       {/* Video Background with 3D Effect */}
       <div 

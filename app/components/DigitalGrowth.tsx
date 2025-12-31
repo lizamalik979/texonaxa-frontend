@@ -9,8 +9,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useSection } from "../contexts/SectionContext";
 
 export default function DigitalGrowth() {
+  const { setActiveSection } = useSection();
   const posts = [
     {
       date: "08.08.2021",
@@ -54,6 +56,8 @@ export default function DigitalGrowth() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
+      onMouseEnter={() => setActiveSection("digitalGrowth")}
+      onMouseLeave={() => setActiveSection("default")}
     >
       <motion.div className="max-w-[1920px] mx-auto" variants={fadeInUp} custom={0}>
         {/* Header */}
