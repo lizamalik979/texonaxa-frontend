@@ -47,7 +47,7 @@ export default function Home() {
     // Show loader for 3 seconds
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 4000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
