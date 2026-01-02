@@ -4,7 +4,6 @@ import { useState } from "react";
 import { poppins } from "../fonts";
 import { motion, AnimatePresence } from "framer-motion";
 import ContactLeadForm from "./contact/ContactLeadForm";
-import { X } from "lucide-react";
 import { useSection } from "../contexts/SectionContext";
 
 export default function WorkTogether() {
@@ -63,17 +62,8 @@ export default function WorkTogether() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-black/95 rounded-3xl p-4 sm:p-6 border border-white/10">
-                {/* Close Button */}
-                <button
-                  onClick={() => setShowContactForm(false)}
-                  className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/80 hover:text-white transition-colors p-2"
-                  aria-label="Close form"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-
                 {/* Form */}
-                <ContactLeadForm />
+                <ContactLeadForm onClose={() => setShowContactForm(false)} />
               </div>
             </motion.div>
           </>

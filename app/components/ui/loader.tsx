@@ -43,7 +43,18 @@ export default function Loader() {
 
   return (
     <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
-      <div className="flex items-center justify-center">
+      {/* Mobile: Simple TEXONAXA text only */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+        className={`md:hidden text-4xl sm:text-5xl font-bold text-white ${poppins.className}`}
+      >
+        TEXONAXA
+      </motion.div>
+
+      {/* Desktop: TEX + Spline + NAXA */}
+      <div className="hidden md:flex items-center justify-center">
         {/* TEX - fade in animation */}
         <motion.div
           initial={{ opacity: 0 }}
