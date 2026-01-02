@@ -19,7 +19,6 @@ async function getServiceData(slug: string): Promise<ServiceApiResponse | null> 
     const response = await fetch(`${apiUrl}/api/services/client/${slug}`, {
       cache: "no-store",
     });
-   console.log("service responsw", response)
     if (!response.ok) {
       if (response.status === 404) {
         console.error(`Service with slug "${slug}" not found (404)`);

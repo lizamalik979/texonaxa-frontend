@@ -173,7 +173,7 @@ export default function SearchBar({ onSearchResults, onSearchError, onCategoryCl
     };
 
     return (
-        <div className="w-full mx-auto py-4">
+        <div className="w-full mx-auto py-4 px-2 sm:px-0">
             {/* Search Input Container */}
             <div className="relative max-w-[1200px] mx-auto">
                 {/* Search Input */}
