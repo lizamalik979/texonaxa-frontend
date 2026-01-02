@@ -295,20 +295,6 @@ export default function Header() {
               </div>
             );
           })}
-          
-          {/* About us and Contact us - Now part of the left navigation */}
-          <Link
-            href="/about"
-            className={`text-sm sm:text-base font-medium hover:text-amber-200 transition-colors ${poppins.className}`}
-          >
-            About us
-          </Link>
-          <Link
-            href="/contact"
-            className={`text-sm sm:text-base font-medium hover:text-amber-200 transition-colors ${poppins.className}`}
-          >
-            Contact us
-          </Link>
         </nav>
 
         {/* Mobile Menu Button - Shows when screen < 1024px (lg breakpoint) */}
@@ -534,24 +520,6 @@ export default function Header() {
                         </motion.div>
                       );
                     })}
-
-                    {/* About us and Contact us in Mobile Menu */}
-                    <div className="border-t border-white/10 mt-4 pt-4">
-                      <Link
-                        href="/about"
-                        className={`block py-3 text-base font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all ${poppins.className}`}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        About us
-                      </Link>
-                      <Link
-                        href="/contact"
-                        className={`block py-3 text-base font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all ${poppins.className}`}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        Contact us
-                      </Link>
-                    </div>
                   </div>
                 </div>
               </motion.div>
