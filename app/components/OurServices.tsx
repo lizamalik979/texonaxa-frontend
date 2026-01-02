@@ -321,7 +321,7 @@ export default function OurServices() {
       </div>
 
       {/* Desktop: Horizontal scroll container */}
-      <div className="hidden md:block h-[120vh]" ref={containerRef}>
+      <div className="hidden xl:block h-[120vh]" ref={containerRef}>
         <div className="sticky top-0 py-12 md:py-20 flex items-center overflow-hidden">
           <div
             ref={cardsRef}
@@ -394,12 +394,26 @@ export default function OurServices() {
         </div>
       </div>
 
-      {/* Mobile: Swiper with pagination dots */}
-      <div className="md:hidden px-4 pb-20">
+      {/* Mobile/Tablet/Desktop up to 1280px: Swiper with pagination dots */}
+      <div className="xl:hidden px-4 pb-20">
         <Swiper
           modules={[Pagination]}
-          spaceBetween={24}
-          slidesPerView={1}
+          spaceBetween={16}
+          slidesPerView={1.2}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 24,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 24,
+            },
+          }}
           pagination={{ 
             clickable: true,
             bulletClass: 'swiper-pagination-bullet !bg-white/30 !opacity-100',
@@ -409,7 +423,7 @@ export default function OurServices() {
         >
           {cards.map((card) => (
             <SwiperSlide key={card.id}>
-              <div className="group relative w-full aspect-square max-w-md mx-auto rounded-2xl overflow-hidden transform transition-all duration-300 ease-out">
+              <div className="group relative w-full aspect-square rounded-2xl overflow-hidden transform transition-all duration-300 ease-out">
                 {/* Service Image */}
                 <div className="absolute inset-0">
                   <Image
