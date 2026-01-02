@@ -178,8 +178,8 @@ export default function Testimonials() {
             </CarouselContent>
 
             <div className="flex justify-center items-center gap-3 mt-10">
-              <CarouselPrevious className="static bg-white/10 border-white/20 text-white hover:bg-white/20 w-10 h-10" />
-              <CarouselNext className="static bg-white/10 border-white/20 text-white hover:bg-white/20 w-10 h-10" />
+              <CarouselPrevious className="static cursor-pointer bg-white/10 border-white/20 text-white hover:bg-white/20 w-10 h-10" />
+              <CarouselNext className="static cursor-pointer bg-white/10 border-white/20 text-white hover:bg-white/20 w-10 h-10" />
             </div>
           </Carousel>
         </motion.div>

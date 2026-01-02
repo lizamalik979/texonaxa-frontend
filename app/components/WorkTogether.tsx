@@ -28,7 +28,7 @@ export default function WorkTogether() {
             {/* Button */}
             <button 
               onClick={() => setShowContactForm(true)}
-              className="px-5 py-3 bg-[#F0AF4E] rounded-lg inline-flex justify-center items-center gap-2.5 hover:scale-105 transition-all duration-300"
+              className="px-5 py-3 bg-[#F0AF4E] cursor-pointer rounded-lg inline-flex justify-center items-center gap-2.5 hover:scale-105 transition-all duration-300"
             >
               <span className={`text-center text-black text-xl sm:text-2xl font-medium ${poppins.className}`}>
                 Get in touch

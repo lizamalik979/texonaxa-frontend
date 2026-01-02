@@ -689,7 +689,7 @@ export default function HeroSection() {
         
         {/* Subtitle */}
         <motion.p
-          className={`max-w-3xl opacity-80 text-center text-white text-base md:text-lg lg:text-xl font-medium mt-4 ${poppins.className}`}
+          className={`max-w-3xl opacity-80 text-center leading-loose text-white text-base md:text-lg lg:text-xl font-medium ${poppins.className}`}
           variants={itemVariants}
         >
           Design, strategy, and technology working together to grow your brand fast and effectively.
@@ -697,24 +697,11 @@ export default function HeroSection() {
         
         {/* CTA Button */}
         <motion.button
-          className="group relative mt-6 h-14 sm:h-16 md:h-16 w-56 sm:w-64 md:w-72 border border-neutral-700 text-left p-3 sm:p-4 text-gray-50 text-sm sm:text-base md:text-lg font-bold rounded-lg overflow-hidden origin-left hover:border-[#F0AF4E] hover:text-[#F0AF4E] transition-all duration-500 cursor-pointer flex items-center justify-center"
+          className={`hero-cta-button mt-6 h-14 sm:h-16 md:h-16 w-56 text-black sm:w-48 md:w-64 text-center text-black text-md sm:text-xl font-medium  cursor-pointer flex items-center justify-center ${poppins.className}`}
           variants={buttonVariants}
           onClick={() => setShowContactForm(true)}
         >
-          {/* ::before element - violet blur circle */}
-          <span 
-            className="absolute w-12 h-12 right-1 top-1 z-10 bg-violet-500 rounded-full blur-lg transition-all duration-500 group-hover:right-12 group-hover:-bottom-8 group-hover:[box-shadow:20px_20px_20px_30px_#a21caf]"
-          />
-          
-          {/* ::after element - rose blur circle */}
-          <span 
-            className="absolute z-10 w-20 h-20 bg-rose-300 right-8 top-3 rounded-full blur-lg transition-all duration-500 group-hover:-right-8"
-          />
-          
-          {/* Button Text */}
-          <span className={`relative z-20 ${poppins.className}`}>
-            Start Project
-          </span>
+          Start Project
         </motion.button>
       </motion.div>
 

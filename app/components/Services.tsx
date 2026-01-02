@@ -73,8 +73,6 @@ const Services = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isInView, setIsInView] = useState(false);
   const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
   const { setActiveSection: setSectionContext } = useSection();
@@ -90,36 +88,6 @@ const Services = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Intersection Observer to detect when section enters viewport (for loader)
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsInView(true);
-            // Hide loader after section is in view
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 500);
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '100px',
-      }
-    );
-
-    observer.observe(sectionRef.current);
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
 
   // Intersection Observer for scroll detection - only when sticky
   useEffect(() => {
@@ -265,15 +233,6 @@ const Services = () => {
       onMouseEnter={() => setSectionContext("services")}
       onMouseLeave={() => setSectionContext("default")}
     >
-      {/* Loader */}
-      {isLoading && isInView && (
-        <div className="sticky top-0 h-screen flex items-center justify-center z-50">
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
-            <p className={`text-white text-lg ${poppins.className}`}>Loading services...</p>
-          </div>
-        </div>
-      )}
       {/* Scroll trigger sections - positioned at start, stacked vertically - only when sticky */}
       {isSticky && (
         <div className="absolute top-0 left-0 right-0">
@@ -292,7 +251,7 @@ const Services = () => {
       )}
 
       {/* Container - sticky only when a service is clicked */}
-      <div className={`${isSticky ? 'sticky' : 'relative'} top-0 h-screen flex flex-col justify-center ${isLoading && isInView ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
+      <div className={`${isSticky ? 'sticky' : 'relative'} top-0 h-screen flex flex-col justify-center`}>
         {/* Header */}
         <div className="pb-8 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32">
           <motion.div

@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import HeroSection from "./components/HeroSection";
 import LazyLoadSection from "./components/common/LazyLoadSection";
+import Loader from "./components/ui/loader";
 
 // Lazy load components that are below the fold
 const AboutUs = dynamic(() => import("./components/AboutUs"), {
@@ -39,6 +41,21 @@ const WorkTogether = dynamic(() => import("./components/WorkTogether"), {
 
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Show loader for 3 seconds
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <main>
       <HeroSection />

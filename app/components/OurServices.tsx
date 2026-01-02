@@ -23,7 +23,6 @@ export default function OurServices() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isInView, setIsInView] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
@@ -84,32 +83,6 @@ export default function OurServices() {
     };
   }, []);
 
-  // Intersection Observer to detect when section enters viewport (for loader)
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsInView(true);
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '100px',
-      }
-    );
-
-    observer.observe(containerRef.current);
-
-    return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
-    };
-  }, []);
 
   useEffect(() => {
     if (!containerRef.current || !cardsRef.current || !isMounted) return;
@@ -122,8 +95,6 @@ export default function OurServices() {
 
     // Wait for next frame to ensure DOM is ready
     const setupScrollTrigger = () => {
-      setIsLoading(true);
-      
       const cards = cardsRef.current?.children;
       if (!cards || cards.length === 0) {
         // Retry if cards aren't ready
@@ -131,7 +102,7 @@ export default function OurServices() {
         return;
       }
 
-      const cardWidth = 500;
+      const cardWidth = 450;
       const gap = 48; // gap-12 = 48px
       const totalWidth = (cardWidth * cards.length) + (gap * (cards.length - 1));
       const centerOffset = (window.innerWidth - totalWidth) / 2; // Center all cards
@@ -178,10 +149,6 @@ export default function OurServices() {
             invalidateOnRefresh: true,
             refreshPriority: 1,
             onUpdate: () => {
-              // Hide loader once animation starts
-              if (animationInstance && animationInstance.progress() > 0) {
-                setIsLoading(false);
-              }
             },
           }
         });
@@ -195,11 +162,6 @@ export default function OurServices() {
       }
       
       scrollTriggerInstance = animationInstance?.scrollTrigger || null;
-      
-      // Hide loader after a short delay to ensure everything is set up
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
       
       // THE TRICK: Watch for when section enters view and reset if needed
       const checkAndReset = () => {
@@ -217,7 +179,7 @@ export default function OurServices() {
           if (scrollTriggerInstance) scrollTriggerInstance.kill();
           if (animationInstance) animationInstance.kill();
           
-          const cardWidthReset = 500;
+          const cardWidthReset = 450;
           const gapReset = 48;
           const totalWidthReset = (cardWidthReset * cards.length) + (gapReset * (cards.length - 1));
           const centerOffsetReset = (window.innerWidth - totalWidthReset) / 2;
@@ -361,29 +323,19 @@ export default function OurServices() {
 
       {/* Desktop: Horizontal scroll container */}
       <div className="hidden md:block h-[120vh]" ref={containerRef}>
-        {/* Loader */}
-        {isLoading && isInView && (
-          <div className="sticky top-0 h-screen flex items-center justify-center z-50">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
-              <p className={`text-white text-lg ${poppins.className}`}>Loading services...</p>
-            </div>
-          </div>
-        )}
-        
-        <div className={`sticky top-0 py-12 md:py-20 flex items-center overflow-hidden ${isLoading && isInView ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
+        <div className="sticky top-0 py-12 md:py-20 flex items-center overflow-hidden">
           <div
             ref={cardsRef}
             className="flex gap-12 px-8"
             style={{ 
-              width: isMounted ? `${cards.length * 500}px` : `${cards.length * 400}px`,
+              width: isMounted ? `${cards.length * 450}px` : `${cards.length * 360}px`,
               willChange: 'transform'
             }}
         >
             {cards.map((card) => (
               <div
                 key={card.id}
-                className={`group relative w-[500px] h-[500px] rounded-2xl overflow-hidden transform transition-all duration-300 ease-out ${
+                className={`group relative w-[450px] h-[450px] rounded-2xl overflow-hidden transform transition-all duration-300 ease-out ${
                   hoveredCard === card.id 
                     ? 'scale-[1.02]' 
                     : 'opacity-70'
@@ -398,9 +350,12 @@ export default function OurServices() {
                     alt={card.title}
                     fill
                     className="object-cover"
-                    sizes="500px"
+                    sizes="450px"
                   />
                 </div>
+                
+                {/* Black gradient overlay at bottom for text visibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none z-[5]"></div>
                 
                 {/* Purple glow effect for active card */}
                 {/* {hoveredCard === card.id && (
@@ -410,7 +365,7 @@ export default function OurServices() {
                 {/* Glow shadow for active card */}
                 {hoveredCard === card.id && (
                   <div 
-                    className="absolute inset-0 rounded-2xl pointer-events-none"
+                    className="absolute inset-0 rounded-2xl pointer-events-none z-[6]"
                     style={{
                       boxShadow: '0 0 40px 10px rgba(147, 51, 234, 0.4), 0 0 80px 20px rgba(147, 51, 234, 0.2)'
                     }}
@@ -421,18 +376,16 @@ export default function OurServices() {
                 <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-8 text-white">
                   <div className="space-y-4">
                     {/* Title */}
-                    <h3 className={`text-xl md:text-3xl font-bold ${poppins.className}`}>
+                    <h3 className={`text-xl md:text-3xl font-semibold ${poppins.className}`}>
                       {card.title}
                     </h3>
 
                     {/* More Details Button */}
                     <button 
                       onClick={() => setShowContactForm(true)}
-                      className={`w-fit py-3 px-6 bg-[#F0AF4E] rounded-lg hover:scale-105 transition-all duration-300 ${poppins.className}`}
+                      className={`hero-cta-button rounded-lg w-fit text-black text-md sm:text-xl font-medium text-center cursor-pointer flex items-center justify-center ${poppins.className}`}
                     >
-                      <span className="text-black text-base font-medium">
-                        More details
-                      </span>
+                      More details
                     </button>
                   </div>
                 </div>
@@ -469,6 +422,9 @@ export default function OurServices() {
                   />
                 </div>
 
+                {/* Black gradient overlay at bottom for text visibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none z-[5]"></div>
+
                 {/* Content - positioned at bottom */}
                 <div className="relative z-10 h-full flex flex-col justify-end p-6 text-white">
                   <div className="space-y-4">
@@ -480,11 +436,9 @@ export default function OurServices() {
                     {/* More Details Button */}
                     <button 
                       onClick={() => setShowContactForm(true)}
-                      className={`w-fit py-3 px-6 bg-[#F0AF4E] rounded-lg hover:scale-105 transition-all duration-300 ${poppins.className}`}
+                      className={`hero-cta-button w-fit text-black text-xl sm:text-2xl font-medium text-center cursor-pointer flex items-center justify-center ${poppins.className}`}
                     >
-                      <span className="text-black text-base font-medium">
-                        More details
-                      </span>
+                      More details
                     </button>
                   </div>
                 </div>
