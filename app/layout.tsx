@@ -5,6 +5,7 @@ import Footer from "./components/common/Footer";
 import Header from "./components/common/Header";
 import LeadModalProvider from "./components/leads/LeadModalProvider";
 import HeaderMenuProvider from "./contexts/HeaderMenuContext";
+import FooterMenuProvider from "./contexts/FooterMenuContext";
 import { SectionProvider } from "./contexts/SectionContext";
 import MouseGradient from "./components/common/MouseGradient";
 
@@ -27,14 +28,16 @@ export default function RootLayout({
         {/* Content above the background */}
         <div className="relative z-10">
           <HeaderMenuProvider>
-            <LeadModalProvider>
-              <SectionProvider>
-                <MouseGradient />
-                <Header />
-                {children}
-                <Footer />
-              </SectionProvider>
-            </LeadModalProvider>
+            <FooterMenuProvider>
+              <LeadModalProvider>
+                <SectionProvider>
+                  <MouseGradient />
+                  <Header />
+                  {children}
+                  <Footer />
+                </SectionProvider>
+              </LeadModalProvider>
+            </FooterMenuProvider>
           </HeaderMenuProvider>
         </div>
       </body>
