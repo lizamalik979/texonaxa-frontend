@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import ThreeD from "../ThreeD";
 import { poppins } from "../../fonts";
 import { useHeaderMenu } from "../../contexts/HeaderMenuContext";
-import { ChildMenu, SubChildMenu } from "../../types/header";
 
 export default function Footer() {
   const { menuData } = useHeaderMenu();
@@ -15,22 +14,15 @@ export default function Footer() {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    // Expand all sections and first child of each menu by default when menu data is loaded
     if (menuData.length > 0 && expandedSections.size === 0) {
       const sectionsToExpand = new Set<string>();
       const itemsToExpand = new Set<string>();
       
       menuData.forEach((menuItem, index) => {
-        // Expand all sections (both desktop and mobile)
         sectionsToExpand.add(`section-${index}`);
-        sectionsToExpand.add(`mobile-section-${index}`);
         
-        // Expand first child of each section (only first-level, not nested)
         if (menuItem.child_menu && Array.isArray(menuItem.child_menu) && menuItem.child_menu.length > 0) {
-          // Desktop first child
           itemsToExpand.add(`section-${index}-item-0`);
-          // Mobile first child
-          itemsToExpand.add(`mobile-section-${index}-item-0`);
         }
       });
       
@@ -78,9 +70,9 @@ export default function Footer() {
 
   return (
     <footer className="w-full py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8">
-      <div className="max-w-[1000px] mx-auto">
+      <div className="max-w-[1100px] mx-auto">
         {/* Desktop Layout - Multi-column with expandable sections */}
-        <div className="hidden lg:grid grid-cols-5 gap-x-6 md:gap-x-8 lg:gap-x-10 gap-y-6 md:gap-y-8">
+        <div className="hidden lg:grid grid-cols-6 gap-x-6 md:gap-x-8 lg:gap-x-10 gap-y-6 md:gap-y-8">
           {menuData.map((menuItem, index) => {
             const sectionId = `section-${index}`;
             const isExpanded = expandedSections.has(sectionId);
@@ -90,9 +82,18 @@ export default function Footer() {
               <div key={sectionId} className="flex flex-col gap-4 items-start text-left">
                 {/* Section Header */}
                 <div className="flex items-start justify-start gap-2 w-full">
-                  <h3 className={`text-neutral-400 text-base font-medium leading-tight uppercase ${poppins.className}`}>
-                    {menuItem.title}
-                  </h3>
+                  {menuItem.url && menuItem.url.trim() !== "" ? (
+                    <Link
+                      href={menuItem.url}
+                      className={`text-neutral-400 text-base font-medium leading-tight uppercase hover:text-white transition-colors ${poppins.className}`}
+                    >
+                      {menuItem.title}
+                    </Link>
+                  ) : (
+                    <h3 className={`text-neutral-400 text-base font-medium leading-tight uppercase ${poppins.className}`}>
+                      {menuItem.title}
+                    </h3>
+                  )}
                   {hasChild && (
                     <button
                       onClick={() => toggleSection(sectionId)}
@@ -260,9 +261,18 @@ export default function Footer() {
               <div key={sectionId} className="border-b border-white/10 pb-4 last:border-b-0">
                 {/* Section Header */}
                 <div className="flex items-center justify-between">
-                  <h3 className={`text-neutral-400 text-xl font-medium leading-tight uppercase ${poppins.className}`}>
-                    {menuItem.title}
-                  </h3>
+                  {menuItem.url && menuItem.url.trim() !== "" ? (
+                    <Link
+                      href={menuItem.url}
+                      className={`text-neutral-400 text-xl font-medium leading-tight uppercase hover:text-white transition-colors ${poppins.className}`}
+                    >
+                      {menuItem.title}
+                    </Link>
+                  ) : (
+                    <h3 className={`text-neutral-400 text-xl font-medium leading-tight uppercase ${poppins.className}`}>
+                      {menuItem.title}
+                    </h3>
+                  )}
                   {hasChild && (
                     <button
                       onClick={() => toggleSection(sectionId)}

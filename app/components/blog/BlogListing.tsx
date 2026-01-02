@@ -45,10 +45,10 @@ export default function BlogListing({ posts }: BlogListingProps) {
   // Format date helper
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     });
   };
   const description = featuredPost.description ? featuredPost.description : featuredPost.excerpt;
@@ -95,11 +95,11 @@ export default function BlogListing({ posts }: BlogListingProps) {
               {/* Content */}
               <div className="px-4 py-6 md:px-6 md:py-8 space-y-2">
                 <Link href={`/blog/${featuredPost.slug}`}>
-                <h3 className={`text-base sm:text-lg font-bold text-white  line-clamp-2 group-hover:text-[#FEE39A] transition-colors ${poppins.className}`}>
-                  {featuredPost.title}
-                </h3>
+                  <h3 className={`text-base sm:text-lg font-bold text-white  line-clamp-2 group-hover:text-[#FEE39A] transition-colors ${poppins.className}`}>
+                    {featuredPost.title}
+                  </h3>
                 </Link>
-                
+
                 {/* Meta Information */}
                 <div className="flex flex-wrap items-center gap-4">
                   {featuredPost.publishedAt && (
@@ -129,15 +129,75 @@ export default function BlogListing({ posts }: BlogListingProps) {
           </div>
 
           {/* Sidebar Posts - Right Side (max-width: 600px) */}
+          {/* <div className="w-full lg:max-w-[600px] flex flex-col gap-4">
+            {sidebarPosts.map((post) => (
+              <Link key={post.id} href={`/blog/${post.slug}`}>
+                <article
+                  className="group relative flex flex-col sm:flex-row items-center gap-4 rounded-xl overflow-hidden bg-gradient-to-b from-[rgba(19,19,19,0.9)] to-[rgba(19,18,18,0.45)] hover:opacity-90 transition-all duration-300 cursor-pointer"
+                >
+
+                  {post.featuredImage ? (
+                    <div className="relative w-[254px] h-[133px] flex-shrink-0 overflow-hidden rounded-[12px]">
+                      <img
+                        src={post.featuredImage}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent">
+                        <div className="absolute inset-0 opacity-20">
+                          <div className="absolute top-1 right-1 w-6 h-6 border-2 border-white/30 rotate-45"></div>
+                          <div className="absolute bottom-1 left-1 w-4 h-4 border-2 border-white/20 rotate-45"></div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="relative w-[254px] h-[133px] flex-shrink-0 bg-gradient-to-br from-gray-800 to-gray-900 rounded-[12px] overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
+                    </div>
+                  )}
+
+
+                  <div className="flex flex-col justify-between flex-1 min-w-0 min-h-[133px]">
+                    <div className="flex-1 flex flex-col justify-center space-y-3">
+
+                      {post.publishedAt && (
+                        <p className={`text-xs text-gray-400  ${poppins.className}`}>
+                          {formatDate(post.publishedAt)}
+                        </p>
+                      )}
+                      
+
+                      <h4 className={`text-base sm:text-lg font-bold text-white  line-clamp-2 group-hover:text-[#FEE39A] transition-colors ${poppins.className}`}>
+                        {post.title}
+                      </h4>
+                      
+
+                      {post.author && (
+                        <div className="flex items-center gap-2">
+                          <p className={`text-xs text-gray-400 ${poppins.className}`}>
+                            {post.author.username}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div> */}
+
+          {/* Sidebar Posts - Right Side (max-width: 600px) */}
           <div className="w-full lg:max-w-[600px] flex flex-col gap-4">
             {sidebarPosts.map((post) => (
               <Link key={post.id} href={`/blog/${post.slug}`}>
                 <article
-                  className="group relative flex flex-row items-center gap-4 rounded-xl overflow-hidden bg-gradient-to-b from-[rgba(19,19,19,0.9)] to-[rgba(19,18,18,0.45)] hover:opacity-90 transition-all duration-300 cursor-pointer"
+                  className="group relative flex flex-col sm:flex-row items-center gap-4 rounded-xl overflow-hidden bg-gradient-to-b from-[rgba(19,19,19,0.9)] to-[rgba(19,18,18,0.45)] hover:opacity-90 transition-all duration-300 cursor-pointer w-full"
                 >
-                  {/* Image Section - Left Side (40-50% width, 254px x 133px) */}
+                  {/* Image Section - Full width on mobile, fixed on larger screens */}
                   {post.featuredImage ? (
-                    <div className="relative w-[254px] h-[133px] flex-shrink-0 overflow-hidden rounded-[12px]">
+                    <div className="relative w-full sm:w-[254px] h-[200px] sm:h-[133px] flex-shrink-0 overflow-hidden rounded-[12px]">
                       <img
                         src={post.featuredImage}
                         alt={post.title}
@@ -153,26 +213,26 @@ export default function BlogListing({ posts }: BlogListingProps) {
                       </div>
                     </div>
                   ) : (
-                    <div className="relative w-[254px] h-[133px] flex-shrink-0 bg-gradient-to-br from-gray-800 to-gray-900 rounded-[12px] overflow-hidden">
+                    <div className="relative w-full sm:w-[254px] h-[200px] sm:h-[133px] flex-shrink-0 bg-gradient-to-br from-gray-800 to-gray-900 rounded-[12px] overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
                     </div>
                   )}
 
-                  {/* Content Section - Right Side (50-60% width) */}
-                  <div className="flex flex-col justify-between flex-1 min-w-0 min-h-[133px]">
+                  {/* Content Section - Full width on mobile */}
+                  <div className="flex flex-col justify-between flex-1 min-w-0 w-full sm:min-h-[133px] px-2 sm:px-0">
                     <div className="flex-1 flex flex-col justify-center space-y-3">
                       {/* Date */}
                       {post.publishedAt && (
-                        <p className={`text-xs text-gray-400  ${poppins.className}`}>
+                        <p className={`text-xs text-gray-400 ${poppins.className}`}>
                           {formatDate(post.publishedAt)}
                         </p>
                       )}
-                      
+
                       {/* Title */}
-                      <h4 className={`text-base sm:text-lg font-bold text-white  line-clamp-2 group-hover:text-[#FEE39A] transition-colors ${poppins.className}`}>
+                      <h4 className={`text-base sm:text-lg font-bold text-white line-clamp-2 group-hover:text-[#FEE39A] transition-colors ${poppins.className}`}>
                         {post.title}
                       </h4>
-                      
+
                       {/* Author */}
                       {post.author && (
                         <div className="flex items-center gap-2">
@@ -182,7 +242,6 @@ export default function BlogListing({ posts }: BlogListingProps) {
                         </div>
                       )}
                     </div>
-                  
                   </div>
                 </article>
               </Link>

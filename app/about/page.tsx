@@ -10,7 +10,7 @@ import WorkTogether from "../components/WorkTogether";
 
 async function getAboutData(): Promise<AboutApiResponse | null> {
   try {
-    const apiUrl= process.env.BACKEND_API_URL || "http://localhost:3000";
+    const apiUrl= process.env.BACKEND_API_URL || "https://texonaxa-cms.vercel.app";
     const response = await fetch(`${apiUrl}/api/about`);
 
     if (!response.ok) {
