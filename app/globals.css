@@ -117,3 +117,64 @@ body {
 .swiper-slide {
   height: auto !important;
 }
+
+@keyframes text-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-5px);
+  }
+}
+
+@keyframes text-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(5px);
+  }
+}
+
+.animate-text-slide-left {
+  animation: text-slide-left 1s ease-out 0.3s forwards !important;
+  will-change: transform, opacity;
+}
+
+.animate-text-slide-right {
+  animation: text-slide-right 1s ease-out 0.3s forwards !important;
+  will-change: transform, opacity;
+}
+
+@keyframes pulse512 {
+  0% {
+    box-shadow: 0 0 0 0 #F0AF4E66;
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgb(240 175 78 / 0%);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgb(240 175 78 / 0%);
+  }
+}
+
+.hero-cta-button {
+  border: none;
+  background-image: linear-gradient(30deg, #F0AF4E, #FFCE86);
+  border-radius: 12px;
+  background-size: 100% auto;
+  padding: 0.6em 1.5em;
+  transition: all 0.3s ease;
+}
+
+.hero-cta-button:hover {
+  background-position: right center;
+  background-size: 200% auto;
+  animation: pulse512 1.5s infinite;
+}
