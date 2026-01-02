@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { poppins } from "../../fonts";
+import { X } from "lucide-react";
 
 type LeadPayload = {
   name: string;
@@ -19,7 +20,11 @@ const SERVICE_OPTIONS = [
   "Website Maintenance",
 ] as const;
 
-export default function ContactLeadForm() {
+interface ContactLeadFormProps {
+  onClose?: () => void;
+}
+
+export default function ContactLeadForm({ onClose }: ContactLeadFormProps) {
   const apiBase = useMemo(
     () => process.env.NEXT_PUBLIC_BACKEND_API_URL || "https://texonaxa-cms.vercel.app",
     []
@@ -102,9 +107,20 @@ export default function ContactLeadForm() {
 
   return (
     <div className="w-full mx-auto px-0">
-      <h1 className={`text-xl sm:text-2xl font-semibold text-white text-center ${poppins.className}`}>
-      Let's Build Something Great
-      </h1>
+      <div className="relative">
+        <h1 className={`text-xl sm:text-2xl font-semibold text-white text-center ${poppins.className}`}>
+          Let's Build Something Great
+        </h1>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-0 right-0 text-white/80 hover:text-white transition-colors p-1.5 sm:p-2 -mt-1 sm:mt-0"
+            aria-label="Close form"
+          >
+            <X className="w-5 h-5 sm:w-6 sm:h-6" />
+          </button>
+        )}
+      </div>
       <div className="mt-2 h-px w-full bg-white/15" />
 
       <div className="mt-3 space-y-2.5">

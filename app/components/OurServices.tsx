@@ -7,8 +7,11 @@ import { poppins } from "../fonts";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import ContactLeadForm from "./contact/ContactLeadForm";
-import { X } from "lucide-react";
 import { useSection } from "../contexts/SectionContext";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -16,10 +19,11 @@ gsap.registerPlugin(ScrollTrigger);
 export default function OurServices() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isInView, setIsInView] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
   const { setActiveSection } = useSection();
 
@@ -48,32 +52,36 @@ export default function OurServices() {
     setIsMounted(true);
   }, []);
 
-  // Intersection Observer to detect when section enters viewport
+  // Intersection Observer to detect when heading exits top of viewport
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!headingRef.current) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsInView(true);
+          // When heading is NOT intersecting (has scrolled past top), start animation
+          if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+            setShouldAnimate(true);
+          } else {
+            setShouldAnimate(false);
           }
         });
       },
       {
-        threshold: 0.1,
-        rootMargin: '100px',
+        threshold: 0,
+        rootMargin: '0px',
       }
     );
 
-    observer.observe(containerRef.current);
+    observer.observe(headingRef.current);
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
+      if (headingRef.current) {
+        observer.unobserve(headingRef.current);
       }
     };
   }, []);
+
 
   useEffect(() => {
     if (!containerRef.current || !cardsRef.current || !isMounted) return;
@@ -86,8 +94,6 @@ export default function OurServices() {
 
     // Wait for next frame to ensure DOM is ready
     const setupScrollTrigger = () => {
-      setIsLoading(true);
-      
       const cards = cardsRef.current?.children;
       if (!cards || cards.length === 0) {
         // Retry if cards aren't ready
@@ -95,11 +101,10 @@ export default function OurServices() {
         return;
       }
 
-      const cardWidth = 500;
+      const cardWidth = 450;
       const gap = 48; // gap-12 = 48px
       const totalWidth = (cardWidth * cards.length) + (gap * (cards.length - 1));
-      const centerOffset = (window.innerWidth - cardWidth) / 2;
-      const edgeOffset = window.innerWidth - cardWidth;
+      const centerOffset = (window.innerWidth - totalWidth) / 2; // Center all cards
       
       // Kill any existing ScrollTriggers for this element
       if (scrollTriggerInstance) {
@@ -119,40 +124,43 @@ export default function OurServices() {
 
       if (!containerRef.current) return;
       
-      const containerHeight = containerRef.current.offsetHeight || window.innerHeight * 1.2;
+      // Set initial position - center all cards so all 3 are visible
+      gsap.set(cardsRef.current, { 
+        x: centerOffset,
+        opacity: 1,
+        scale: 1
+      });
       
-      // Reset cards to start position
-      gsap.set(cardsRef.current, { x: edgeOffset });
+      const containerHeight = window.innerHeight * 2; // Scroll distance for exit animation
       
-      animationInstance = gsap.fromTo(
-        cardsRef.current,
-        { x: edgeOffset },
-        {
-          x: -(totalWidth - cardWidth - centerOffset),
-          ease: "none",
+      // Only animate if shouldAnimate is true (heading has exited top)
+      if (shouldAnimate) {
+        animationInstance = gsap.to(cardsRef.current, {
+          x: window.innerWidth, // Move cards off screen to the right
+          opacity: 0,
+          scale: 0.8,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top bottom",
-            end: () => `+=${containerHeight}`,
-            scrub: 4,
+            start: "top top", // Start when container reaches top
+            end: () => `+=${containerHeight}`, // Scroll distance
+            scrub: 2, // Smooth animation
             invalidateOnRefresh: true,
             refreshPriority: 1,
             onUpdate: () => {
-              // Hide loader once animation starts
-              if (animationInstance && animationInstance.progress() > 0) {
-                setIsLoading(false);
-              }
             },
           }
-        }
-      );
+        });
+      } else {
+        // Keep cards centered and visible
+        gsap.set(cardsRef.current, {
+          x: centerOffset,
+          opacity: 1,
+          scale: 1
+        });
+      }
       
-      scrollTriggerInstance = animationInstance.scrollTrigger || null;
-      
-      // Hide loader after a short delay to ensure everything is set up
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
+      scrollTriggerInstance = animationInstance?.scrollTrigger || null;
       
       // THE TRICK: Watch for when section enters view and reset if needed
       const checkAndReset = () => {
@@ -170,26 +178,35 @@ export default function OurServices() {
           if (scrollTriggerInstance) scrollTriggerInstance.kill();
           if (animationInstance) animationInstance.kill();
           
-          gsap.set(cardsRef.current, { x: edgeOffset });
+          const cardWidthReset = 450;
+          const gapReset = 48;
+          const totalWidthReset = (cardWidthReset * cards.length) + (gapReset * (cards.length - 1));
+          const centerOffsetReset = (window.innerWidth - totalWidthReset) / 2;
           
-          animationInstance = gsap.fromTo(
-            cardsRef.current,
-            { x: edgeOffset },
-            {
-              x: -(totalWidth - cardWidth - centerOffset),
-              ease: "none",
+          gsap.set(cardsRef.current, { 
+            x: centerOffsetReset,
+            opacity: 1,
+            scale: 1
+          });
+          
+          if (shouldAnimate) {
+            animationInstance = gsap.to(cardsRef.current, {
+              x: window.innerWidth,
+              opacity: 0,
+              scale: 0.8,
+              ease: "power2.out",
               scrollTrigger: {
                 trigger: containerRef.current,
                 start: `${currentScroll} top`,
                 end: `${currentScroll + containerHeight} top`,
-                scrub: 4,
+                scrub: 2,
                 invalidateOnRefresh: true,
                 refreshPriority: 1,
               }
-            }
-          );
+            });
+          }
           
-          scrollTriggerInstance = animationInstance.scrollTrigger || null;
+          scrollTriggerInstance = animationInstance?.scrollTrigger || null;
         }
       };
       
@@ -280,7 +297,7 @@ export default function OurServices() {
         }
       });
     };
-  }, [isMounted, cards.length]);
+  }, [isMounted, cards.length, shouldAnimate]);
 
   return (
     <div 
@@ -291,7 +308,10 @@ export default function OurServices() {
       {/* Header Section */}
       <div className="px-4 md:px-8 pt-12 md:pt-16 lg:pt-20 mb-16">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 ${poppins.className}`}>
+          <h2 
+            ref={headingRef}
+            className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6 ${poppins.className}`}
+          >
             Our Services
           </h2>
           <p className={`max-w-7xl mx-auto text-white text-base md:text-xl opacity-80 ${poppins.className}`}>
@@ -301,30 +321,20 @@ export default function OurServices() {
       </div>
 
       {/* Desktop: Horizontal scroll container */}
-      <div className="hidden md:block h-[120vh]" ref={containerRef}>
-        {/* Loader */}
-        {isLoading && isInView && (
-          <div className="sticky top-0 h-screen flex items-center justify-center z-50">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
-              <p className={`text-white text-lg ${poppins.className}`}>Loading services...</p>
-            </div>
-          </div>
-        )}
-        
-        <div className={`sticky top-0 py-12 md:py-20 flex items-center overflow-hidden ${isLoading && isInView ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}>
+      <div className="hidden xl:block h-[120vh]" ref={containerRef}>
+        <div className="sticky top-0 py-12 md:py-20 flex items-center overflow-hidden">
           <div
             ref={cardsRef}
             className="flex gap-12 px-8"
             style={{ 
-              width: isMounted ? `${cards.length * 500}px` : `${cards.length * 400}px`,
+              width: isMounted ? `${cards.length * 450}px` : `${cards.length * 360}px`,
               willChange: 'transform'
             }}
         >
             {cards.map((card) => (
               <div
                 key={card.id}
-                className={`group relative w-[500px] h-[500px] rounded-2xl overflow-hidden transform transition-all duration-300 ease-out ${
+                className={`group relative w-[450px] h-[450px] rounded-2xl overflow-hidden transform transition-all duration-300 ease-out ${
                   hoveredCard === card.id 
                     ? 'scale-[1.02]' 
                     : 'opacity-70'
@@ -339,9 +349,12 @@ export default function OurServices() {
                     alt={card.title}
                     fill
                     className="object-cover"
-                    sizes="500px"
+                    sizes="450px"
                   />
                 </div>
+                
+                {/* Black gradient overlay at bottom for text visibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none z-[5]"></div>
                 
                 {/* Purple glow effect for active card */}
                 {/* {hoveredCard === card.id && (
@@ -351,7 +364,7 @@ export default function OurServices() {
                 {/* Glow shadow for active card */}
                 {hoveredCard === card.id && (
                   <div 
-                    className="absolute inset-0 rounded-2xl pointer-events-none"
+                    className="absolute inset-0 rounded-2xl pointer-events-none z-[6]"
                     style={{
                       boxShadow: '0 0 40px 10px rgba(147, 51, 234, 0.4), 0 0 80px 20px rgba(147, 51, 234, 0.2)'
                     }}
@@ -362,18 +375,16 @@ export default function OurServices() {
                 <div className="relative z-10 h-full flex flex-col justify-end p-6 md:p-8 text-white">
                   <div className="space-y-4">
                     {/* Title */}
-                    <h3 className={`text-xl md:text-3xl font-bold ${poppins.className}`}>
+                    <h3 className={`text-xl md:text-3xl font-semibold ${poppins.className}`}>
                       {card.title}
                     </h3>
 
                     {/* More Details Button */}
                     <button 
                       onClick={() => setShowContactForm(true)}
-                      className={`w-fit py-3 px-6 bg-[#F0AF4E] rounded-lg hover:scale-105 transition-all duration-300 ${poppins.className}`}
+                      className={`hero-cta-button rounded-lg w-fit text-black text-md sm:text-xl font-medium text-center cursor-pointer flex items-center justify-center ${poppins.className}`}
                     >
-                      <span className="text-black text-base font-medium">
-                        More details
-                      </span>
+                      More details
                     </button>
                   </div>
                 </div>
@@ -383,68 +394,71 @@ export default function OurServices() {
         </div>
       </div>
 
-      {/* Mobile: Column layout */}
-      <div className="md:hidden px-4 pb-20">
-        <div className="flex flex-col gap-6 max-w-md mx-auto">
+      {/* Mobile/Tablet/Desktop up to 1280px: Swiper with pagination dots */}
+      <div className="xl:hidden px-4 pb-20">
+        <Swiper
+          modules={[Pagination]}
+          spaceBetween={16}
+          slidesPerView={1.2}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 24,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 24,
+            },
+          }}
+          pagination={{ 
+            clickable: true,
+            bulletClass: 'swiper-pagination-bullet !bg-white/30 !opacity-100',
+            bulletActiveClass: 'swiper-pagination-bullet-active !bg-white'
+          }}
+          className="!pb-12"
+        >
           {cards.map((card) => (
-            <div
-              key={card.id}
-              className={`group relative w-full aspect-square max-w-md mx-auto rounded-2xl overflow-hidden transform transition-all duration-300 ease-out ${
-                hoveredCard === card.id 
-                  ? 'scale-[1.02]' 
-                  : 'opacity-70'
-              }`}
-              onMouseEnter={() => setHoveredCard(card.id)}
-              onMouseLeave={() => setHoveredCard(null)}
-            >
-              {/* Service Image */}
-              <div className="absolute inset-0">
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 400px"
-                />
-              </div>
-              
-              {/* Purple glow effect for active card */}
-              {hoveredCard === card.id && (
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 via-blue-500/20 to-purple-600/30 rounded-2xl"></div>
-              )}
-              
-              {/* Glow shadow for active card */}
-              {hoveredCard === card.id && (
-                <div 
-                  className="absolute inset-0 rounded-2xl pointer-events-none"
-                  style={{
-                    boxShadow: '0 0 40px 10px rgba(147, 51, 234, 0.4), 0 0 80px 20px rgba(147, 51, 234, 0.2)'
-                  }}
-                ></div>
-              )}
+            <SwiperSlide key={card.id}>
+              <div className="group relative w-full aspect-square rounded-2xl overflow-hidden transform transition-all duration-300 ease-out">
+                {/* Service Image */}
+                <div className="absolute inset-0">
+                  <Image
+                    src={card.image}
+                    alt={card.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 400px"
+                  />
+                </div>
 
-              {/* Content - positioned at bottom */}
-              <div className="relative z-10 h-full flex flex-col justify-end p-6 text-white">
-                <div className="space-y-4">
-                  {/* Title */}
-                  <h3 className={`text-xl font-bold ${poppins.className}`}>
-                    {card.title}
-                </h3>
+                {/* Black gradient overlay at bottom for text visibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none z-[5]"></div>
 
-                {/* More Details Button */}
-                <button 
-                  onClick={() => setShowContactForm(true)}
-                  className={`w-fit py-3 px-6 bg-[#F0AF4E] rounded-lg hover:scale-105 transition-all duration-300 ${poppins.className}`}
-                >
-                  <span className="text-black text-base font-medium">
-                    More details
-                  </span>
-                </button>
+                {/* Content - positioned at bottom */}
+                <div className="relative z-10 h-full flex flex-col justify-end p-6 text-white">
+                  <div className="space-y-4">
+                    {/* Title */}
+                    <h3 className={`text-xl font-bold ${poppins.className}`}>
+                      {card.title}
+                    </h3>
+
+                    {/* More Details Button */}
+                    <button 
+                      onClick={() => setShowContactForm(true)}
+                      className={`hero-cta-button w-fit text-black text-xl sm:text-2xl font-medium text-center cursor-pointer flex items-center justify-center ${poppins.className}`}
+                    >
+                      More details
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
 
       {/* Contact Form Modal */}
@@ -471,17 +485,8 @@ export default function OurServices() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-black/95 rounded-3xl p-4 sm:p-6 border border-white/10">
-                {/* Close Button */}
-                <button
-                  onClick={() => setShowContactForm(false)}
-                  className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/80 hover:text-white transition-colors p-2"
-                  aria-label="Close form"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-
                 {/* Form */}
-                <ContactLeadForm />
+                <ContactLeadForm onClose={() => setShowContactForm(false)} />
               </div>
             </motion.div>
           </>

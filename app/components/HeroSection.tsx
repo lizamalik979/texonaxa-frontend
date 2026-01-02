@@ -6,7 +6,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { orbitron, poppins } from "../fonts";
 import * as PIXI from "pixi.js";
 import ContactLeadForm from "./contact/ContactLeadForm";
-import { X } from "lucide-react";
 import { useSection } from "../contexts/SectionContext";
 
 interface MeteorColor {
@@ -689,7 +688,7 @@ export default function HeroSection() {
         
         {/* Subtitle */}
         <motion.p
-          className={`max-w-3xl opacity-80 text-center text-white text-base md:text-lg lg:text-xl font-medium mt-4 ${poppins.className}`}
+          className={`max-w-3xl opacity-80 text-center leading-loose text-white text-base md:text-lg lg:text-xl font-medium ${poppins.className}`}
           variants={itemVariants}
         >
           Design, strategy, and technology working together to grow your brand fast and effectively.
@@ -697,14 +696,11 @@ export default function HeroSection() {
         
         {/* CTA Button */}
         <motion.button
-          className="mt-6 px-8 py-4 bg-[#F0AF4E] rounded-lg inline-flex justify-center items-center gap-2.5"
+          className={`hero-cta-button mt-6 h-14 sm:h-16 md:h-16 w-56 text-black sm:w-48 md:w-64 text-center text-black text-md sm:text-xl font-medium  cursor-pointer flex items-center justify-center ${poppins.className}`}
           variants={buttonVariants}
-          whileHover="hover"
           onClick={() => setShowContactForm(true)}
         >
-          <span className={`text-center text-black text-lg md:text-xl lg:text-2xl font-medium ${poppins.className}`}>
-            Start Project
-          </span>
+          Start Project
         </motion.button>
       </motion.div>
 
@@ -732,17 +728,8 @@ export default function HeroSection() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-black/95 rounded-3xl p-4 sm:p-6 border border-white/10">
-                {/* Close Button */}
-                <button
-                  onClick={() => setShowContactForm(false)}
-                  className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/80 hover:text-white transition-colors p-2"
-                  aria-label="Close form"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-
                 {/* Form */}
-                <ContactLeadForm />
+                <ContactLeadForm onClose={() => setShowContactForm(false)} />
               </div>
             </motion.div>
           </>

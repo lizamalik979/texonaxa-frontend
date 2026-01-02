@@ -74,6 +74,7 @@ const Services = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const triggerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
   const { setActiveSection: setSectionContext } = useSection();
 
   useEffect(() => {
@@ -86,6 +87,7 @@ const Services = () => {
 
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
 
   // Intersection Observer for scroll detection - only when sticky
   useEffect(() => {
@@ -224,6 +226,7 @@ const Services = () => {
   // Desktop view with sticky scroll
   return (
     <motion.section
+      ref={sectionRef}
       className="relative"
       initial="hidden"
       animate="visible"
