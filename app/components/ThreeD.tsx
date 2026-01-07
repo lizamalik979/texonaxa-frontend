@@ -127,18 +127,18 @@ export default function ThreeD() {
         {/* Flex container for Text - Globe - Text */}
         <div className="w-full flex items-center justify-center relative h-[200px] sm:h-[300px] md:h-[400px]">
 
-          {/* TEXO - Left Side */}
+          {/* TEX - Left Side */}
           <div className="flex-1 flex justify-end pr-1 sm:pr-2 md:pr-4">
             <h2
               className={`text-2xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold text-white z-10 ${poppins.className}`}
             >
-              TEXO
+              TEX
             </h2>
           </div>
 
           {/* Globe - Center */}
           <motion.div
-            className="w-full h-full max-w-[120px] max-h-[120px] sm:max-w-[220px] sm:max-h-[220px] md:max-w-[350px] md:max-h-[350px] z-30 relative flex items-center justify-center shrink-0"
+            className="w-full h-full max-w-[50px] max-h-[50px] sm:max-w-[60px] sm:max-h-[6px] md:max-w-[150px] md:max-h-[150px] z-30 relative flex items-center justify-center shrink-0"
             initial={{ 
               opacity: 0, 
               scale: 0.3,
