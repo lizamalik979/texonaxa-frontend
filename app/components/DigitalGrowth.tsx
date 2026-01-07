@@ -56,7 +56,7 @@ export default function DigitalGrowth() {
         }
 
         const data: BlogApiResponse = await response.json();
-        
+
         if (data.success && Array.isArray(data.posts)) {
           setPosts(data.posts);
         } else {
@@ -93,7 +93,7 @@ export default function DigitalGrowth() {
 
   return (
     <motion.section
-      className="w-full py-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32"
+      className="w-full py-10 sm:py-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 2xl:px-32"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
@@ -160,7 +160,7 @@ export default function DigitalGrowth() {
                       viewport={{ once: true, amount: 0.2 }}
                     >
                       {/* Image Section - Using featuredImage from API */}
-                      <div className="relative max-w-72 max-h-72 w-full aspect-square rounded-2xl overflow-hidden">
+                      <div className="relative  max-h-72 w-full aspect-square rounded-2xl overflow-hidden">
                         {post.featuredImage ? (
                           <Image
                             src={post.featuredImage}
@@ -187,7 +187,7 @@ export default function DigitalGrowth() {
                         </p>
 
                         {/* Title */}
-                        <h3 className={`text-white text-xl font-bold ${poppins.className}`}>
+                        <h3 className={`text-white text-xl line-clamp-1 font-bold ${poppins.className}`}>
                           {post.title}
                         </h3>
 
@@ -197,11 +197,11 @@ export default function DigitalGrowth() {
                         </p>
 
                         {/* Read More Button - Link to blog post */}
-                        <Link 
+                        <Link
                           href={`/blog/${post.slug}`}
-                          className={`w-full py-3 px-6 bg-transparent border border-[#FEE39A] rounded-lg hover:border-[#FEE39A] hover:bg-[#FEE39A]/10 transition-all duration-300 text-center ${poppins.className}`}
+                          className={`w-full py-3 px-6 bg-transparent border border-[#F0AF4E] rounded-lg hover:border-[#FEE39A] hover:bg-[#FEE39A]/10 transition-all duration-300 text-center ${poppins.className}`}
                         >
-                          <span className="text-[#FEE39A] text-base font-medium">
+                          <span className="text-[#F0AF4E] text-base font-medium">
                             Read More
                           </span>
                         </Link>
@@ -210,8 +210,14 @@ export default function DigitalGrowth() {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="-left-12 bg-black/50 border-gray-800 text-white hover:bg-black/70 hover:text-white" />
-              <CarouselNext className="-right-12 bg-black/50 border-gray-800 text-white hover:bg-black/70 hover:text-white" />
+
+              {/* Mobile: Top right corner with gap-5, Desktop: Original position */}
+              <div className="absolute -top-7 right-[48px] flex md:hidden z-10">
+                <CarouselPrevious className="  bg-black/50 border-gray-800 text-white hover:bg-black/70 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed" />
+                <CarouselNext className="  bg-black/50 border-gray-800 text-white hover:bg-black/70 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed" />
+              </div>
+              <CarouselPrevious className="hidden md:flex -left-12 bg-black/50 border-gray-800 text-white hover:bg-black/70 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed" />
+              <CarouselNext className="hidden md:flex -right-12 bg-black/50 border-gray-800 text-white hover:bg-black/70 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed" />
             </Carousel>
           )}
         </motion.div>

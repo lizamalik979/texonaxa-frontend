@@ -138,7 +138,7 @@ export default function ThreeD() {
 
           {/* Globe - Center */}
           <motion.div
-            className="w-full h-full max-w-[100px] max-h-[100px] sm:max-w-[120px] sm:max-h-[125px] md:max-w-[150px] md:max-h-[150px] z-30 relative flex items-center justify-center shrink-0"
+            className="w-full h-full max-w-[50px] max-h-[50px] sm:max-w-[60px] sm:max-h-[6px] md:max-w-[150px] md:max-h-[150px] z-30 relative flex items-center justify-center shrink-0"
             initial={{ 
               opacity: 0, 
               scale: 0.3,
